@@ -1,0 +1,52 @@
+import type { GetStaticProps, NextPage, NextPageContext } from "next";
+import Head from "next/head";
+import Link from "next/link";
+import { ParsedUrlQuery } from "querystring";
+import { Company, getCompanyById, listCompanies } from "../../lib/hygraph";
+
+type Props = {
+  company: Company;
+};
+
+const Me: NextPage<Props> = ({ company }) => {
+  return (
+    <div>
+      <Head>
+        <title>Gretabot 2000 result</title>
+        <meta name="description" content="Some meta" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <main>
+        <h3>Company:</h3>
+        {company.displayNameCompany}
+        {company.climateScore}
+        {company.climateClaims}
+      </main>
+    </div>
+  );
+};
+
+interface Params extends ParsedUrlQuery {
+  id: string;
+}
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  const { id } = context.params as Params;
+  const company = await getCompanyById(id);
+
+  return {
+    props: { company },
+  };
+};
+
+export async function getStaticPaths() {
+  const companies = await listCompanies();
+
+  const paths = companies.map((c) => ({ params: { id: c.id } }));
+  console.log("paths");
+  console.log(paths);
+  return { paths, fallback: false };
+}
+
+export default Me;
