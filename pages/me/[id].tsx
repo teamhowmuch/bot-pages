@@ -151,14 +151,12 @@ function renderBanks(
   chatData: ChatData,
   companies: RankedCompanyWithRelations[]
 ) {
-  const current = companies.filter((c) =>
-    c.userRelations.includes("healthInsurance")
-  );
+  const current = companies.filter((c) => c.userRelations.includes("bank"));
   const alternative = companies.find((c) =>
-    c.userRelations.includes("healthInsuranceAlternative")
+    c.userRelations.includes("bankAlternative")
   );
 
-  if (!current) {
+  if (current.length === 0) {
     return null;
   }
 
@@ -253,10 +251,6 @@ function rankCompanies(companies: Company[], data: ChatData): RankedCompany[] {
   for (const company of rankedCompanies) {
     for (let [valueName, scoreName] of Object.entries(valueMap)) {
       const userScore = (data[valueName as UserValue] as number) || 3;
-      console.log("userScore");
-      console.log(userScore);
-      // @ts-ignore
-      console.log(data[valueName]);
       if (userScore in POINT_MAP) {
         company.score =
           // @ts-ignore
@@ -346,7 +340,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
   const userCompanies = withUserRelations.filter(
     (c) => c.userRelations.length > 0
   );
-  console.log(userCompanies);
 
   return {
     props: { chatData, userCompanies, debugCompanies: withUserRelations },
