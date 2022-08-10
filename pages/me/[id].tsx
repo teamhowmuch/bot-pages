@@ -17,6 +17,19 @@ type CompanyScores = Pick<
 >;
 type CompanyScore = keyof CompanyScores;
 
+type CompanyClaims = Pick<
+  Company,
+  | "fairPayClaims"
+  | "natureClaims"
+  | "climateClaims"
+  | "fairPayClaims"
+  | "animalClaims"
+  | "antiTaxAvoidanceClaims"
+  | "antiWeaponsClaims"
+  | "equalityClaims"
+>;
+type CompanyClaim = keyof CompanyClaims;
+
 interface ChatData {
   id: string;
 
@@ -53,6 +66,25 @@ const valueMap: ValueMap = {
   gender_equality: "equalityScore",
 };
 
+type ClaimMap = Record<UserValue, CompanyClaim>;
+const claimsMap: ClaimMap = {
+  ceo_pay: "fairPayClaims",
+  biodiversity: "natureClaims",
+  climate: "climateClaims",
+  fair_pay: "fairPayClaims",
+  animal_welfare: "animalClaims",
+  tax_evasion_sucks: "antiTaxAvoidanceClaims",
+  weapons_are_ok: "antiWeaponsClaims",
+  gender_equality: "equalityClaims",
+};
+
+function findUserValueByClaimName(claimName: CompanyClaim) {
+  const res = Object.entries(claimsMap).find(
+    ([key, value]) => value === claimName
+  );
+  return res;
+}
+
 type CompanyRelation =
   | "superBad"
   | "travelInsurance"
@@ -81,6 +113,31 @@ interface Params extends ParsedUrlQuery {
   id: string;
 }
 
+function renderCompany(
+  company: RankedCompanyWithRelations,
+  chatData: ChatData
+) {
+  return (
+    <div>
+      <h4>
+        {company.displayNameCompany}
+        <small>(debug score: {company.score})</small>
+      </h4>
+      <ul>
+        {Object.entries(chatData)
+          .filter(([key]) => Object.keys(valueMap).includes(key))
+          .filter(([key, value]) => value > 3)
+          .filter(([key]) => company[claimsMap[key as UserValue]])
+          .map(([key, content]) => (
+            <li key={`${key}-${company.id}`}>
+              {company[claimsMap[key as UserValue]]}
+            </li>
+          ))}
+      </ul>
+    </div>
+  );
+}
+
 function renderTravelInsurance(
   chatData: ChatData,
   companies: RankedCompanyWithRelations[]
@@ -98,15 +155,13 @@ function renderTravelInsurance(
 
   return (
     <div>
-      <h4>Travel insurance</h4>
-      <p>
-        Current: {current.displayNameCompany} (debug score: {current.score})
-      </p>
+      <h1>Travel insurance</h1>
+      {renderCompany(current, chatData)}
       {alternative ? (
-        <p>
-          Better alternative: {alternative.displayNameCompany} (debug score:
-          {alternative.score})
-        </p>
+        <>
+          <h2>Better alternative:</h2>
+          {renderCompany(alternative, chatData)}
+        </>
       ) : (
         <p>It is the best, no alternative!</p>
       )}
@@ -188,7 +243,7 @@ function renderCompanies(
   return (
     <div>
       {renderTravelInsurance(chatData, companies)}
-      {renderHealthInsurance(chatData, companies)}
+      {/* {renderHealthInsurance(chatData, companies)} */}
       {renderBanks(chatData, companies)}
     </div>
   );
@@ -210,7 +265,7 @@ const ChatResults: NextPage<Props> = ({
       </Head>
 
       <main>
-        <h1>Hello</h1>
+        <h1>Hello 🤖</h1>
         <p>
           I have processed your values and analysed 219 reports on your
           companies.
@@ -238,11 +293,11 @@ interface RankedCompanyWithRelations extends RankedCompany {
 }
 
 const POINT_MAP = {
-  1: -100,
-  2: -50,
+  1: -2,
+  2: -1,
   3: 0,
-  4: 50,
-  5: 100,
+  4: 2,
+  5: 3,
 } as const;
 
 function rankCompanies(companies: Company[], data: ChatData): RankedCompany[] {

@@ -20,13 +20,13 @@ export type Company = {
   sellsBankaccount: boolean;
   costBankaccount: number;
 
-  climateClaims: string;
-  natureClaims: string;
-  fairPayClaims: string;
-  antiTaxAvoidanceClaims: string;
-  equalityClaims: string;
-  antiWeapons: string;
-  animalClaims: string;
+  climateClaims?: string;
+  natureClaims?: string;
+  fairPayClaims?: string;
+  antiTaxAvoidanceClaims?: string;
+  equalityClaims?: string;
+  antiWeaponsClaims?: string;
+  animalClaims?: string;
 
   natureScore: number;
   climateScore: number;
