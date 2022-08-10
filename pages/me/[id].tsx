@@ -2,140 +2,26 @@ import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { ParsedUrlQuery } from "querystring";
-import { Company, getTravelInsurance, listCompanies } from "../../lib/hygraph";
-
-type CompanyScores = Pick<
-  Company,
-  | "fairPayScore"
-  | "natureScore"
-  | "climateScore"
-  | "fairPayScore"
-  | "animalScore"
-  | "antiTaxAvoidanceScore"
-  | "antiWeaponsScore"
-  | "equalityScore"
->;
-type CompanyScore = keyof CompanyScores;
-
-type CompanyClaims = Pick<
-  Company,
-  | "fairPayClaims"
-  | "natureClaims"
-  | "climateClaims"
-  | "fairPayClaims"
-  | "animalClaims"
-  | "antiTaxAvoidanceClaims"
-  | "antiWeaponsClaims"
-  | "equalityClaims"
->;
-type CompanyClaim = keyof CompanyClaims;
-
-interface ChatData {
-  id: string;
-
-  travel_insurance: string;
-  health_insurance: string;
-  banks: string;
-
-  ceo_pay: number;
-  biodiversity: number;
-  climate: number;
-  fair_pay: number;
-  animal_welfare: number;
-  tax_evasion_sucks: number;
-  weapons_are_ok: number;
-  gender_equality: number;
-}
-
-type UserValues = Omit<
+import { CompanyClaims } from "../../lib/components";
+import { listCompanies } from "../../lib/hygraph";
+import {
   ChatData,
-  "id" | "travel_insurance" | "health_insurance" | "banks"
->;
-type UserValue = keyof UserValues;
-
-type ValueMap = Record<UserValue, CompanyScore>;
-
-const valueMap: ValueMap = {
-  ceo_pay: "fairPayScore",
-  biodiversity: "natureScore",
-  climate: "climateScore",
-  fair_pay: "fairPayScore",
-  animal_welfare: "animalScore",
-  tax_evasion_sucks: "antiTaxAvoidanceScore",
-  weapons_are_ok: "antiWeaponsScore",
-  gender_equality: "equalityScore",
-};
-
-type ClaimMap = Record<UserValue, CompanyClaim>;
-const claimsMap: ClaimMap = {
-  ceo_pay: "fairPayClaims",
-  biodiversity: "natureClaims",
-  climate: "climateClaims",
-  fair_pay: "fairPayClaims",
-  animal_welfare: "animalClaims",
-  tax_evasion_sucks: "antiTaxAvoidanceClaims",
-  weapons_are_ok: "antiWeaponsClaims",
-  gender_equality: "equalityClaims",
-};
-
-function findUserValueByClaimName(claimName: CompanyClaim) {
-  const res = Object.entries(claimsMap).find(
-    ([key, value]) => value === claimName
-  );
-  return res;
-}
-
-type CompanyRelation =
-  | "superBad"
-  | "travelInsurance"
-  | "healthInsurance"
-  | "bank"
-  | "superBadAlternative"
-  | "travelInsuranceAlternative"
-  | "healthInsuranceAlternative"
-  | "bankAlternative";
-
-type UserCompanies = Record<
-  CompanyRelation,
-  {
-    current?: Company;
-    alternative?: Company;
-  }
->;
+  UserValue,
+  Company,
+  RankedCompanyWithRelations,
+  RankedCompany,
+  valueMap,
+} from "../../lib/models";
+import ThumbsDown from "../../public/gifs/thumbs_down.gif";
+import ThumbsUp from "../../public/gifs/thumbs_up.gif";
 
 interface Props {
   chatData: ChatData;
   userCompanies: RankedCompanyWithRelations[];
-  debugCompanies: RankedCompanyWithRelations[];
 }
 
 interface Params extends ParsedUrlQuery {
   id: string;
-}
-
-function renderCompany(
-  company: RankedCompanyWithRelations,
-  chatData: ChatData
-) {
-  return (
-    <div>
-      <h4>
-        {company.displayNameCompany}
-        <small>(debug score: {company.score})</small>
-      </h4>
-      <ul>
-        {Object.entries(chatData)
-          .filter(([key]) => Object.keys(valueMap).includes(key))
-          .filter(([key, value]) => value > 3)
-          .filter(([key]) => company[claimsMap[key as UserValue]])
-          .map(([key, content]) => (
-            <li key={`${key}-${company.id}`}>
-              {company[claimsMap[key as UserValue]]}
-            </li>
-          ))}
-      </ul>
-    </div>
-  );
 }
 
 function renderTravelInsurance(
@@ -155,12 +41,28 @@ function renderTravelInsurance(
 
   return (
     <div>
-      <h1>Travel insurance</h1>
-      {renderCompany(current, chatData)}
+      <h1>Your travel insurance</h1>
+      <h2>{current.displayNameCompany}</h2>
+      {alternative ? (
+        <div style={{ width: 200 }}>
+          <Image src={ThumbsDown} alt="thumbs_down" layout="responsive" />
+        </div>
+      ) : (
+        <div style={{ width: 200 }}>
+          <Image src={ThumbsUp} alt="thumbs_down" layout="intrinsic" />
+        </div>
+      )}
+      <CompanyClaims company={current} chatData={chatData} />
       {alternative ? (
         <>
           <h2>Better alternative:</h2>
-          {renderCompany(alternative, chatData)}
+          <h1>{alternative.displayNameCompany}</h1>
+          <CompanyClaims company={alternative} chatData={chatData} />
+          <a href="https://www.sns.nl">
+            Go to {alternative.displayNameCompany}
+          </a>{" "}
+          <br />
+          <a href="sources">Sources</a>
         </>
       ) : (
         <p>It is the best, no alternative!</p>
@@ -243,17 +145,13 @@ function renderCompanies(
   return (
     <div>
       {renderTravelInsurance(chatData, companies)}
-      {/* {renderHealthInsurance(chatData, companies)} */}
+      {renderHealthInsurance(chatData, companies)}
       {renderBanks(chatData, companies)}
     </div>
   );
 }
 
-const ChatResults: NextPage<Props> = ({
-  chatData,
-  userCompanies,
-  debugCompanies,
-}) => {
+const ChatResults: NextPage<Props> = ({ chatData, userCompanies }) => {
   const hasSuperBadCompany = true;
 
   return (
@@ -272,25 +170,10 @@ const ChatResults: NextPage<Props> = ({
         </p>
         <p>Here is what I found:</p>
         {renderCompanies(chatData, userCompanies)}
-        <hr />
-        <h5>Debug info</h5>
-        <code>
-          <pre>{JSON.stringify(debugCompanies, null, 2)}</pre>
-        </code>
       </main>
     </div>
   );
 };
-
-interface RankedCompany extends Company {
-  score: number;
-  rank: number;
-}
-
-interface RankedCompanyWithRelations extends RankedCompany {
-  userRelations: CompanyRelation[];
-  hasAlternative: boolean;
-}
 
 const POINT_MAP = {
   1: -2,
@@ -305,7 +188,7 @@ function rankCompanies(companies: Company[], data: ChatData): RankedCompany[] {
 
   for (const company of rankedCompanies) {
     for (let [valueName, scoreName] of Object.entries(valueMap)) {
-      const userScore = (data[valueName as UserValue] as number) || 3;
+      const userScore = (data.values[valueName as UserValue] as number) || 3;
       if (userScore in POINT_MAP) {
         company.score =
           // @ts-ignore
@@ -333,7 +216,7 @@ function assignRelations(
   return companies.map((company, index, companies) => {
     const companyName = company.displayNameCompany;
 
-    if (chatData.health_insurance.includes(companyName)) {
+    if (chatData.companies.health_insurance.includes(companyName)) {
       company.userRelations.push("healthInsurance");
       const betterAlternative = companies.find(
         (c2) =>
@@ -347,7 +230,7 @@ function assignRelations(
       }
     }
 
-    if (chatData.travel_insurance.includes(companyName)) {
+    if (chatData.companies.travel_insurance.includes(companyName)) {
       company.userRelations.push("travelInsurance");
       const betterAlternative = companies.find(
         (c2) =>
@@ -361,7 +244,7 @@ function assignRelations(
       }
     }
 
-    if (chatData.banks.includes(companyName)) {
+    if (chatData.companies.banks.includes(companyName)) {
       company.userRelations.push("bank");
       const betterAlternative = companies.find(
         (c2) =>
@@ -397,7 +280,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
   );
 
   return {
-    props: { chatData, userCompanies, debugCompanies: withUserRelations },
+    props: { chatData, userCompanies },
   };
 };
 

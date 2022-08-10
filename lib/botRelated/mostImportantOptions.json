@@ -1,0 +1,9 @@
+[
+  { "value": "climate", "label": "Q1 Climate & Clean Energy" },
+  { "value": "ceo_pay", "label": "Q2 Limit CEO pay" },
+  { "value": "animal_welfare", "label": "Q3 Industrial Animal Farming" },
+  { "value": "tax_evasion_sucks", "label": "Q4 Tax evasion" },
+  { "value": "weapons_are_ok", "label": "Q5 Weapons industry" },
+  { "value": "gender_equality", "label": "Q6 Gender equality" },
+  { "value": "biodiversity", "label": "Q7 Biodiversity" }
+]

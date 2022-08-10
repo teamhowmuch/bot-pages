@@ -1,5 +1,4 @@
 // @index: export * from ${relpath}
-export * from "./client"
-export * from "./getCompany"
-export * from "./getCompanyByName"
-export * from "./listCompanies"
+export * from "./client";
+export * from "./getCompany";
+export * from "./listCompanies";

@@ -1,0 +1,26 @@
+{
+  "bot_version": "@bot_version",
+
+  "chat_id": "@id",
+  "email": "@email",
+  "name": "@name",
+
+  "companies": {
+    "travel_insurance": "@travelinsurance",
+    "health_insurance": "@healthinsurance",
+    "banks": "@bank"
+  },
+
+  "values": {
+    "ceo_pay": "@ceosalary",
+    "biodiversity": "@biodiversity",
+    "climate": "@climate",
+    "fair_pay": "@fairpay",
+    "animal_welfare": "@animal_welfare",
+    "tax_evasion_sucks": "@tax_evasion_sucks",
+    "weapons_are_ok": "@weapons_are_ok",
+    "gender_equality": "@gender_equality"
+  },
+
+  "most_important": "@most_important"
+}
