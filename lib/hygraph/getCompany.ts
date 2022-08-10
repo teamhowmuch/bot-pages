@@ -1,6 +1,6 @@
 import { gql } from "graphql-request";
 import { hygraphClient } from "./client";
-import { Company } from "./listCompanies";
+import { Company } from "../models";
 
 export async function getCompanyById(id: string) {
   const query = gql`

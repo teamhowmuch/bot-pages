@@ -1,8 +1,8 @@
-import type { GetStaticProps, NextPage, NextPageContext } from "next";
+import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
 import { ParsedUrlQuery } from "querystring";
-import { Company, getCompanyById, listCompanies } from "../../lib/hygraph";
+import { getCompanyById, listCompanies } from "../../lib/hygraph";
+import { Company } from "../../lib/models";
 
 type Props = {
   company: Company;
