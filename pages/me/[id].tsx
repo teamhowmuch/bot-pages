@@ -49,6 +49,14 @@ function renderInsurance(
     <div>
       <h1>Your {label} insurance</h1>
       <h2>{current.displayNameCompany}</h2>
+      <div style={{ width: 200 }}>
+        <Image
+          src={current.logo.url}
+          width={200}
+          height={150}
+          alt={`logo-${current.displayNameCompany}`}
+        />
+      </div>
       {alternative ? (
         <div style={{ width: 200 }}>
           <Image src={ThumbsDown} alt="thumbs_down" layout="responsive" />
@@ -63,6 +71,14 @@ function renderInsurance(
         <>
           <h2>Better alternative:</h2>
           <h1>{alternative.displayNameCompany}</h1>
+          <div style={{ width: 200 }}>
+            <Image
+              src={current.logo.url}
+              width={200}
+              height={150}
+              alt={`logo-${current.displayNameCompany}`}
+            />
+          </div>
           <CompanyClaims company={alternative} chatData={chatData} />
           <a href="https://www.sns.nl">
             Go to {alternative.displayNameCompany}

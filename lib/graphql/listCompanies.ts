@@ -46,6 +46,7 @@ export async function listCompanies() {
     data: { companies },
   } = await client.query<{ companies: Company[] }>({
     query: companiesQuery,
+    fetchPolicy: "no-cache",
   });
 
   return companies;
