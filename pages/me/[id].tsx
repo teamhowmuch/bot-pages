@@ -3,7 +3,7 @@ import Head from "next/head";
 import Image from "next/image";
 import { ParsedUrlQuery } from "querystring";
 import { CompanyClaims } from "../../lib/components";
-import { listCompanies } from "../../lib/hygraph";
+import { listCompanies } from "../../lib/graphql";
 import {
   ChatData,
   UserValue,
@@ -137,12 +137,13 @@ function renderCompanies(
 }
 
 const ChatResults: NextPage<Props> = ({ chatData, userCompanies }) => {
-  const { chat_version } = chatData;
-  if (!chat_version || parseInt(chat_version[0]) < 4) {
+  const { bot_version } = chatData;
+  console.log("bot_version", bot_version);
+  if (!bot_version || parseInt(bot_version[0]) < 4) {
     return (
       <h1>
         Older chat version error{" "}
-        <small>(version: {chat_version || "unknown"})</small>
+        <small>(version: {bot_version || "unknown"})</small>
       </h1>
     );
   }

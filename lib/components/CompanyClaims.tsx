@@ -19,7 +19,6 @@ export function CompanyClaims({ company, chatData }: Props) {
     .filter(([key, value]) => COMPANY_CLAIM_FIELDS.includes(key))
     .map(([key, value]) => value);
 
-  console.log(otherInterestingClaims);
   return (
     <ul>
       {expanded ? (

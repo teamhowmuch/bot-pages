@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { listCompanies } from "../../lib/hygraph";
+import { listCompanies } from "../../lib/graphql";
 import { Company } from "../../lib/models";
 
 type Props = {

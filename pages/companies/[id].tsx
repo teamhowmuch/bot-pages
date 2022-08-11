@@ -1,7 +1,7 @@
 import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { ParsedUrlQuery } from "querystring";
-import { getCompanyById, listCompanies } from "../../lib/hygraph";
+import { getCompanyById, listCompanies } from "../../lib/graphql";
 import { Company } from "../../lib/models";
 
 type Props = {

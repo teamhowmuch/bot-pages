@@ -1,5 +1,5 @@
-import { gql } from "graphql-request";
-import { hygraphClient } from "./client";
+import { gql } from "@apollo/client";
+import { client } from "./client";
 import { Company } from "../models";
 
 export async function getCompanyById(id: string) {
@@ -15,8 +15,13 @@ export async function getCompanyById(id: string) {
     }
   `;
 
-  const { company } = await hygraphClient.request<{ company: Company }>(query, {
-    id,
+  const {
+    data: { company },
+  } = await client.query<{ company: Company }>({
+    query,
+    variables: {
+      id,
+    },
   });
 
   return company;

@@ -20,7 +20,7 @@ export const COMPANY_TYPES = [
 export type CompanyType = typeof COMPANY_TYPES[number];
 
 export interface ChatData {
-  chat_version: string;
+  bot_version: string;
   id: string;
 
   companies: Record<CompanyType, string>;
