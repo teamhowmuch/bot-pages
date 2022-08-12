@@ -2,7 +2,11 @@ import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { ParsedUrlQuery } from "querystring";
-import { CompanyClaims } from "../../lib/components";
+import { useState } from "react";
+import {
+  CompanyClaims,
+  Company as CompanyComponent,
+} from "../../lib/components";
 import { listCompanies } from "../../lib/graphql";
 import {
   ChatData,
@@ -15,12 +19,11 @@ import {
   CompanyRelation,
 } from "../../lib/models";
 import { assignRelations, rankCompanies } from "../../lib/util";
-import ThumbsDown from "../../public/gifs/thumbs_down.gif";
-import ThumbsUp from "../../public/gifs/thumbs_up.gif";
 
 interface Props {
   chatData: ChatData;
   userCompanies: RankedCompanyWithRelations[];
+  debugAllCompanies?: RankedCompanyWithRelations[];
 }
 
 interface Params extends ParsedUrlQuery {
@@ -47,44 +50,31 @@ function renderInsurance(
 
   return (
     <div>
+      <hr />
       <h1>Your {label} insurance</h1>
-      <h2>{current.displayNameCompany}</h2>
-      <div style={{ width: 200 }}>
-        <Image
-          src={current.logo.url}
-          width={200}
-          height={150}
-          alt={`logo-${current.displayNameCompany}`}
-        />
-      </div>
-      {alternative ? (
-        <div style={{ width: 200 }}>
-          <Image src={ThumbsDown} alt="thumbs_down" layout="responsive" />
-        </div>
-      ) : (
-        <div style={{ width: 200 }}>
-          <Image src={ThumbsUp} alt="thumbs_down" layout="intrinsic" />
-        </div>
-      )}
-      <CompanyClaims company={current} chatData={chatData} />
+      <CompanyComponent
+        company={current}
+        chatData={chatData}
+        isAlternative={false}
+      />
       {alternative ? (
         <>
-          <h2>Better alternative:</h2>
-          <h1>{alternative.displayNameCompany}</h1>
-          <div style={{ width: 200 }}>
-            <Image
-              src={current.logo.url}
-              width={200}
-              height={150}
-              alt={`logo-${current.displayNameCompany}`}
-            />
-          </div>
-          <CompanyClaims company={alternative} chatData={chatData} />
-          <a href="https://www.sns.nl">
+          <h1>Better alternative:</h1>
+          <CompanyComponent
+            company={alternative}
+            chatData={chatData}
+            isAlternative={true}
+          />
+          <a
+            href={
+              label === "health" ? alternative.healthURL : alternative.travelURL
+            }
+            target="blank"
+          >
             Go to {alternative.displayNameCompany}
-          </a>{" "}
+          </a>
           <br />
-          <a href="sources">Sources</a>
+          <a href="https://www.gretabot.com/how">Sources</a>
         </>
       ) : (
         <p>It is the best, no alternative!</p>
@@ -108,18 +98,31 @@ function renderBanks(
 
   return (
     <div>
-      <h4>Banks</h4>
-      <p>
-        Current:{" "}
-        {current.map(
-          (c) => `${c.displayNameCompany} (debug score: ${c.score})`
-        )}
-      </p>
+      <hr />
+      <h1>Your Banks</h1>
+      {current.map((c) => (
+        <div key={c.id}>
+          <CompanyComponent
+            company={c}
+            chatData={chatData}
+            isAlternative={true}
+          />
+        </div>
+      ))}
+      <h1>Better alternative:</h1>
       {alternative ? (
-        <p>
-          Better alternative: {alternative.displayNameCompany} (debug score:
-          {alternative.score})
-        </p>
+        <div>
+          <CompanyComponent
+            company={alternative}
+            chatData={chatData}
+            isAlternative={true}
+          />
+          <a href={alternative.bankURL} target="blank">
+            Go to {alternative.displayNameCompany}
+          </a>
+          <br />
+          <a href="https://www.gretabot.com/how">Sources</a>
+        </div>
       ) : (
         <p>It is the best, no alternative!</p>
       )}
@@ -152,9 +155,15 @@ function renderCompanies(
   );
 }
 
-const ChatResults: NextPage<Props> = ({ chatData, userCompanies }) => {
+const ChatResults: NextPage<Props> = ({
+  chatData,
+  userCompanies,
+  debugAllCompanies,
+}) => {
+  const [showDebug, setShowDebug] = useState(false);
+
   const { bot_version } = chatData;
-  console.log("bot_version", bot_version);
+
   if (!bot_version || parseInt(bot_version[0]) < 4) {
     return (
       <h1>
@@ -180,6 +189,19 @@ const ChatResults: NextPage<Props> = ({ chatData, userCompanies }) => {
         </p>
         <p>Here is what I found:</p>
         {renderCompanies(chatData, userCompanies)}
+
+        <div
+          style={{ height: 50, width: "100%", display: "block" }}
+          onClick={() => setShowDebug(!showDebug)}
+        />
+        {showDebug && (
+          <code>
+            Chatdata:
+            <pre>{JSON.stringify(chatData, null, 4)}</pre>
+            Companies:
+            <pre>{JSON.stringify(debugAllCompanies, null, 4)}</pre>
+          </code>
+        )}
       </main>
     </div>
   );
@@ -203,7 +225,11 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
   );
 
   return {
-    props: { chatData, userCompanies },
+    props: {
+      chatData,
+      userCompanies,
+      debugAllCompanies: withUserRelations,
+    },
   };
 };
 

@@ -8,6 +8,10 @@ export type Company = {
     url: string;
   };
 
+  bankURL: string;
+  travelURL: string;
+  healthURL: string;
+
   sellsTravelInsurance: boolean;
   costTravelInsurance: number;
 

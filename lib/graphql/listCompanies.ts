@@ -8,6 +8,10 @@ const companiesQuery = gql`
       id
       displayNameCompany
 
+      bankURL
+      travelURL
+      healthURL
+
       sellsTravelInsurance
       costTravelInsurance
 
