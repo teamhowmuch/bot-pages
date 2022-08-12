@@ -68,7 +68,7 @@ const SecretTestPage: NextPage = () => {
       companies: {
         travel_insurance: data.travel_insurance,
         health_insurance: data.health_insurance,
-        banks: data.banks,
+        banks: [data.banks],
       },
       values: {
         biodiversity: data.biodiversity,

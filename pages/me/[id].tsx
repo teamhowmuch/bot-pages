@@ -194,8 +194,6 @@ const ChatResults: NextPage<Props> = ({ chatData, userCompanies }) => {
           <code>
             Chatdata:
             <pre>{JSON.stringify(chatData, null, 4)}</pre>
-            Companies:
-            <pre>{JSON.stringify(debugAllCompanies, null, 4)}</pre>
           </code>
         )}
       </main>

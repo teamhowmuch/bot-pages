@@ -23,7 +23,11 @@ export interface ChatData {
   bot_version: string;
   id: string;
 
-  companies: Record<CompanyType, string>;
+  companies: {
+    travel_insurance: string;
+    health_insurance: string;
+    banks: string[];
+  };
   values: Record<UserValue, number>;
   most_important: UserValue;
 }
