@@ -38,8 +38,8 @@ export function Company({ company, chatData, isAlternative }: Props) {
         <div style={{ width: 200 }}>
           <Image
             src={company.logo.url}
-            width={200}
-            height={150}
+            height={100}
+            width={202.5}
             alt={`logo-${company.displayNameCompany}`}
           />
         </div>
