@@ -13,7 +13,7 @@ export function assignRelations(
     return companies.map((company, index, companies) => {
       const companyName = company.displayNameCompany;
   
-      if (chatData.companies.health_insurance.includes(companyName)) {
+      if (chatData.companies.health_insurance.includes(companyName) && company.sellsHealthInsurance) {
         company.userRelations.push("healthInsurance");
         const betterAlternative = companies.find(
           (c2) =>
@@ -27,7 +27,7 @@ export function assignRelations(
         }
       }
   
-      if (chatData.companies.travel_insurance.includes(companyName)) {
+      if (chatData.companies.travel_insurance.includes(companyName) && company.sellsTravelInsurance) {
         company.userRelations.push("travelInsurance");
         const betterAlternative = companies.find(
           (c2) =>
@@ -41,7 +41,7 @@ export function assignRelations(
         }
       }
   
-      if (chatData.companies.banks.includes(companyName)) {
+      if (chatData.companies.banks.includes(companyName) && company.sellsBankaccount) {
         company.userRelations.push("bank");
         const betterAlternative = companies.find(
           (c2) =>

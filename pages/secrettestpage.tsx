@@ -11,6 +11,7 @@ import {
   healthSorted,
   travelSorted,
 } from "../lib/botRelated/companyNames";
+import { USER_VALUES } from "../lib/models";
 
 type AuthInputs = {
   email: string;
@@ -31,6 +32,8 @@ type Inputs = {
   tax_evasion_sucks: number;
   weapons_are_ok: number;
   gender_equality: number;
+
+  most_important: string;
 };
 
 const SecretTestPage: NextPage = () => {
@@ -77,7 +80,7 @@ const SecretTestPage: NextPage = () => {
         gender_equality: data.gender_equality,
       },
 
-      most_important: "climate",
+      most_important: data.most_important,
     });
 
     if (res.id) {
@@ -240,6 +243,18 @@ const SecretTestPage: NextPage = () => {
               max={5}
             />
           </div>
+
+          <div>
+            <label>Most important</label>
+            <select {...register("most_important")}>
+              {USER_VALUES.map((i) => (
+                <option key={i} value={i}>
+                  {i}
+                </option>
+              ))}
+            </select>
+          </div>
+
           <input type="submit" />
         </form>
       </main>
