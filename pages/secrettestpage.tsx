@@ -48,7 +48,10 @@ const SecretTestPage: NextPage = () => {
   } = useForm<AuthInputs>();
 
   const onSubmitLogin: SubmitHandler<AuthInputs> = async (data) => {
-    await login(data.email, data.password);
+    const res = await login(data.email, data.password);
+    if (res.status === 404) {
+      alert(`error loggin in ${JSON.stringify(res)}`);
+    }
   };
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -107,8 +110,7 @@ const SecretTestPage: NextPage = () => {
         <form onSubmit={handleSubmitLogin(onSubmitLogin)}>
           <h1>Log in</h1>
           <p>
-            It seems you are{" "}
-            <strong>{isLoggedIn ? "already" : "not"}</strong>{" "}
+            It seems you are <strong>{isLoggedIn ? "already" : "not"}</strong>{" "}
             logged in.
           </p>
           <div>

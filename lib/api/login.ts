@@ -1,5 +1,5 @@
 export async function login(email: string, password: string) {
-  console.log(JSON.stringify({ email, password }));
+  console.log(process.env.NEXT_PUBLIC_API_HOST);
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/auth/login`, {
     method: "POST",
     body: JSON.stringify({ email, password }),
