@@ -28,7 +28,7 @@ const companiesQuery = gql`
       }
       climateClaims
       natureClaims
-      fairpayClaims
+      fairPayClaims
       antiTaxAvoidanceClaims
       equalityClaims
       antiWeaponsClaims

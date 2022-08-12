@@ -155,11 +155,7 @@ function renderCompanies(
   );
 }
 
-const ChatResults: NextPage<Props> = ({
-  chatData,
-  userCompanies,
-  debugAllCompanies,
-}) => {
+const ChatResults: NextPage<Props> = ({ chatData, userCompanies }) => {
   const [showDebug, setShowDebug] = useState(false);
 
   const { bot_version } = chatData;
@@ -228,7 +224,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
     props: {
       chatData,
       userCompanies,
-      debugAllCompanies: withUserRelations,
     },
   };
 };
