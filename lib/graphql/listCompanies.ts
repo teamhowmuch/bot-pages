@@ -4,7 +4,7 @@ import { client } from "./client";
 
 const companiesQuery = gql`
   query CompaniesQuery {
-    companies {
+    companies(first: 100) {
       id
       displayNameCompany
 
@@ -50,7 +50,6 @@ export async function listCompanies() {
     data: { companies },
   } = await client.query<{ companies: Company[] }>({
     query: companiesQuery,
-    fetchPolicy: "no-cache",
   });
 
   return companies;
