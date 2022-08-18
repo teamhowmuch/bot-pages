@@ -32,7 +32,7 @@ function renderRatingGif(hasAlternative: boolean) {
 
 export function Company({ company, chatData, isAlternative }: Props) {
   return (
-    <div>
+    <div className="bg-white rounded-xl p-3">
       <div style={{ width: "100%", display: "flex" }}>
         <div style={{ width: 200 }}>
           <Image

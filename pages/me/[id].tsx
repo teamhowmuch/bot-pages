@@ -51,7 +51,7 @@ function renderInsurance(
   }
 
   return (
-    <div className="py-10">
+    <div className="py-5 rounded">
       <hr />
 
       <div className="py-10">
@@ -202,38 +202,38 @@ const ChatResults: NextPage<Props> = ({ chatData, userCompanies }) => {
   }
 
   return (
-    <div className="p-3">
+    <>
       <Navbar />
+      <div className="p-3">
+        <Head>
+          <title>Gretabot 2000 results</title>
+          <meta name="description" content="Some meta" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
 
-      <Head>
-        <title>Gretabot 2000 results</title>
-        <meta name="description" content="Some meta" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+        <main>
+          <div className="py-3">
+            <p>
+              I listened to what you find important and analysed 219 reports on
+              your companies.
+            </p>
+          </div>
 
-      <main>
-        <div className="py-3">
-          <h1 className="text-xl py-3">🤖 Gretabot</h1>
-          <p>
-            I listened to what you find important and analysed 219 reports on
-            your companies.
-          </p>
-        </div>
+          {renderCompanies(chatData, userCompanies)}
 
-        {renderCompanies(chatData, userCompanies)}
-
-        <div
-          style={{ height: 50, width: "100%", display: "block" }}
-          onClick={() => setShowDebug(!showDebug)}
-        />
-        {showDebug && (
-          <code>
-            Chatdata:
-            <pre>{JSON.stringify(chatData, null, 4)}</pre>
-          </code>
-        )}
-      </main>
-    </div>
+          <div
+            style={{ height: 50, width: "100%", display: "block" }}
+            onClick={() => setShowDebug(!showDebug)}
+          />
+          {showDebug && (
+            <code>
+              Chatdata:
+              <pre>{JSON.stringify(chatData, null, 4)}</pre>
+            </code>
+          )}
+        </main>
+      </div>
+    </>
   );
 };
 
