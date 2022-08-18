@@ -6,6 +6,8 @@ import { useState } from "react";
 import {
   CompanyClaims,
   Company as CompanyComponent,
+  Navbar,
+  Button,
 } from "../../lib/components";
 import { listCompanies } from "../../lib/graphql";
 import {
@@ -49,36 +51,66 @@ function renderInsurance(
   }
 
   return (
-    <div>
+    <div className="py-10">
       <hr />
-      <h1>Your {label} insurance</h1>
-      <CompanyComponent
-        company={current}
-        chatData={chatData}
-        isAlternative={false}
-      />
-      {alternative ? (
-        <>
-          <h1>Better alternative:</h1>
-          <CompanyComponent
-            company={alternative}
-            chatData={chatData}
-            isAlternative={true}
-          />
-          <a
-            href={
-              label === "health" ? alternative.healthURL : alternative.travelURL
-            }
-            target="blank"
-          >
-            Go to {alternative.displayNameCompany}
-          </a>
-          <br />
-          <a href="https://www.gretabot.com/how">Sources</a>
-        </>
-      ) : (
-        <p>It is the best, no alternative!</p>
-      )}
+
+      <div className="py-10">
+        <h1 className="text-3xl">Your {label} insurance</h1>
+        <CompanyComponent
+          company={current}
+          chatData={chatData}
+          isAlternative={false}
+        />
+        {alternative ? (
+          <>
+            <h1 className="text-3xl pt-5">Better fit for you</h1>
+            <CompanyComponent
+              company={alternative}
+              chatData={chatData}
+              isAlternative={true}
+            />
+            <div className="py-3">
+              <h5 className="text-l">{alternative.displayNameCompany}</h5>
+              <div className="flex gap-1">
+                <a
+                  href={
+                    label === "health"
+                      ? alternative.healthURL
+                      : alternative.travelURL
+                  }
+                  target="blank"
+                >
+                  <Button>Go to {alternative.displayNameCompany}</Button>
+                </a>
+                <a
+                  href={
+                    label === "health"
+                      ? "https://www.independer.nl/zorgverzekering/intro.aspx"
+                      : "https://www.independer.nl/reisverzekering/intro.aspx"
+                  }
+                  target="blank"
+                >
+                  <Button>Compare on Independer</Button>
+                </a>
+                <a
+                  href={
+                    label === "health"
+                      ? "https://www.poliswijzer.nl/zorgverzekering"
+                      : "https://www.poliswijzer.nl/reisverzekering/doorlopende/vergelijken"
+                  }
+                  target="blank"
+                >
+                  <Button>Compare on PolisWijzer</Button>
+                </a>
+              </div>
+            </div>
+            <br />
+            <a href="https://www.gretabot.com/how">Sources</a>
+          </>
+        ) : (
+          <p>It is the best, no alternative!</p>
+        )}
+      </div>
     </div>
   );
 }
@@ -109,7 +141,7 @@ function renderBanks(
           />
         </div>
       ))}
-      <h1>Better alternative:</h1>
+      <h1 className="text-3xl pt-5">Best fit for your values</h1>
       {alternative ? (
         <div>
           <CompanyComponent
@@ -170,7 +202,9 @@ const ChatResults: NextPage<Props> = ({ chatData, userCompanies }) => {
   }
 
   return (
-    <div>
+    <div className="p-3">
+      <Navbar />
+
       <Head>
         <title>Gretabot 2000 results</title>
         <meta name="description" content="Some meta" />
@@ -178,12 +212,14 @@ const ChatResults: NextPage<Props> = ({ chatData, userCompanies }) => {
       </Head>
 
       <main>
-        <h1>Hello 🤖</h1>
-        <p>
-          I have processed your values and analysed 219 reports on your
-          companies.
-        </p>
-        <p>Here is what I found:</p>
+        <div className="py-3">
+          <h1 className="text-xl py-3">🤖 Gretabot</h1>
+          <p>
+            I listened to what you find important and analysed 219 reports on
+            your companies.
+          </p>
+        </div>
+
         {renderCompanies(chatData, userCompanies)}
 
         <div
