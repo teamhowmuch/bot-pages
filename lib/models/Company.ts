@@ -3,6 +3,8 @@ export type Company = {
   displayNameCompany: string;
   nameCompanyInternal: string;
 
+  recommend: boolean;
+
   logo: {
     id: string;
     url: string;

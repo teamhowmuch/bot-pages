@@ -21,6 +21,7 @@ export function assignRelations(
       const betterAlternative = companies.find(
         (c2) =>
           c2.id !== company.id &&
+          c2.recommend &&
           c2.score > company.score &&
           c2.sellsHealthInsurance
       );
@@ -38,6 +39,7 @@ export function assignRelations(
       const betterAlternative = companies.find(
         (c2) =>
           c2.id !== company.id &&
+          c2.recommend &&
           c2.score > company.score &&
           c2.sellsTravelInsurance
       );
@@ -56,6 +58,7 @@ export function assignRelations(
       const betterAlternative = companies.find(
         (c2) =>
           c2.id !== company.id &&
+          c2.recommend &&
           c2.score > company.score &&
           c2.sellsBankaccount
       );
