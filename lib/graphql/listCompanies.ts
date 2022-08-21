@@ -8,6 +8,8 @@ const companiesQuery = gql`
       id
       displayNameCompany
 
+      recommend
+
       bankURL
       travelURL
       healthURL
