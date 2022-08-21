@@ -34,11 +34,11 @@ export function Company({ company, chatData, isAlternative }: Props) {
   return (
     <div className="bg-white rounded-xl p-3">
       <div style={{ width: "100%", display: "flex" }}>
-        <div style={{ width: 200 }}>
+        <div style={{ width: 180 }}>
           <Image
             src={company.logo.url}
             height={100}
-            width={202.5}
+            width={180}
             alt={`logo-${company.displayNameCompany}`}
           />
         </div>

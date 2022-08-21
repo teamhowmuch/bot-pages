@@ -71,38 +71,54 @@ function renderInsurance(
               isAlternative={true}
             />
             <div className="py-3">
-              <h5 className="text-l">{alternative.displayNameCompany}</h5>
-              <div className="flex gap-1">
-                <a
-                  href={
-                    label === "health"
-                      ? alternative.healthURL
-                      : alternative.travelURL
-                  }
-                  target="blank"
-                >
-                  <Button>Go to {alternative.displayNameCompany}</Button>
-                </a>
-                <a
-                  href={
-                    label === "health"
-                      ? "https://www.independer.nl/zorgverzekering/intro.aspx"
-                      : "https://www.independer.nl/reisverzekering/intro.aspx"
-                  }
-                  target="blank"
-                >
-                  <Button>Compare on Independer</Button>
-                </a>
-                <a
-                  href={
-                    label === "health"
-                      ? "https://www.poliswijzer.nl/zorgverzekering"
-                      : "https://www.poliswijzer.nl/reisverzekering/doorlopende/vergelijken"
-                  }
-                  target="blank"
-                >
-                  <Button>Compare on PolisWijzer</Button>
-                </a>
+              <div className="p-2 bg-white">
+                <h5 className="text-xl">
+                  {alternative.displayNameCompany} base pricing: €
+                  {label === "health"
+                    ? alternative.costHealthInsurance
+                    : alternative.costTravelInsurance}
+                  /month{" "}
+                  <small>
+                    ({current.displayNameCompany} = €
+                    {label === "health"
+                      ? current.costHealthInsurance
+                      : current.costTravelInsurance}
+                    /month)
+                  </small>
+                </h5>
+
+                <div className="flex gap-1">
+                  <a
+                    href={
+                      label === "health"
+                        ? alternative.healthURL
+                        : alternative.travelURL
+                    }
+                    target="blank"
+                  >
+                    <Button>Go to {alternative.displayNameCompany}</Button>
+                  </a>
+                  <a
+                    href={
+                      label === "health"
+                        ? "https://www.independer.nl/zorgverzekering/intro.aspx"
+                        : "https://www.independer.nl/reisverzekering/intro.aspx"
+                    }
+                    target="blank"
+                  >
+                    <Button>Compare on Independer</Button>
+                  </a>
+                  <a
+                    href={
+                      label === "health"
+                        ? "https://www.poliswijzer.nl/zorgverzekering"
+                        : "https://www.poliswijzer.nl/reisverzekering/doorlopende/vergelijken"
+                    }
+                    target="blank"
+                  >
+                    <Button>Compare on PolisWijzer</Button>
+                  </a>
+                </div>
               </div>
             </div>
             <br />
