@@ -2,7 +2,7 @@ import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { ParsedUrlQuery } from "querystring";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   CompanyClaims,
   Company as CompanyComponent,
@@ -21,6 +21,7 @@ import {
   CompanyType,
   CompanyRelation,
 } from "../../lib/models";
+import { associateSession, trackEvent as tr } from "../../lib/tracking";
 import { assignRelations, rankCompanies } from "../../lib/util";
 
 interface Props {
@@ -94,6 +95,16 @@ function renderInsurance(
                         ? alternative.healthURL
                         : alternative.travelURL
                     }
+                    onClick={() =>
+                      tr({
+                        action: "clickAlternative",
+                        category: "click",
+                        data: {
+                          externalWebsite: "Company Direct",
+                          company: alternative.displayNameCompany,
+                        },
+                      })
+                    }
                     target="blank"
                   >
                     <Button>Go to {alternative.displayNameCompany}</Button>
@@ -104,6 +115,16 @@ function renderInsurance(
                         ? "https://www.independer.nl/zorgverzekering/intro.aspx"
                         : "https://www.independer.nl/reisverzekering/intro.aspx"
                     }
+                    onClick={() =>
+                      tr({
+                        action: "clickAlternative",
+                        category: "click",
+                        data: {
+                          externalWebsite: "Independer",
+                          company: alternative.displayNameCompany,
+                        },
+                      })
+                    }
                     target="blank"
                   >
                     <Button>Compare on Independer</Button>
@@ -113,6 +134,16 @@ function renderInsurance(
                       label === "health"
                         ? "https://www.poliswijzer.nl/zorgverzekering"
                         : "https://www.poliswijzer.nl/reisverzekering/doorlopende/vergelijken"
+                    }
+                    onClick={() =>
+                      tr({
+                        action: "clickAlternative",
+                        category: "click",
+                        data: {
+                          externalWebsite: "Poliswijzer",
+                          company: alternative.displayNameCompany,
+                        },
+                      })
                     }
                     target="blank"
                   >
@@ -207,7 +238,22 @@ function renderCompanies(
 const ChatResults: NextPage<Props> = ({ chatData, userCompanies }) => {
   const [showDebug, setShowDebug] = useState(false);
 
-  const { bot_version } = chatData;
+  const { bot_version, email } = chatData;
+
+  useEffect(() => {
+    async function trackPageView() {
+      await tr({
+        action: "pageView",
+        category: "pageview",
+        data: {
+          bot_version,
+        },
+      });
+
+      await associateSession({ user_email: email });
+    }
+    trackPageView();
+  }, [bot_version, email]);
 
   if (!bot_version || parseInt(bot_version[0]) < 4) {
     return (

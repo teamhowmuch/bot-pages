@@ -6,6 +6,7 @@ import {
   COMPANY_CLAIM_FIELDS,
   UserValue,
 } from "../models";
+import { trackEvent } from "../tracking";
 
 interface Props {
   company: RankedCompanyWithRelations;
@@ -84,7 +85,14 @@ export function CompanyClaims({ company, chatData }: Props) {
               color: "blue",
               cursor: "pointer",
             }}
-            onClick={() => setExpanded(!expanded)}
+            onClick={() => {
+              trackEvent({
+                action: "Click more information",
+                category: "click",
+                data: { company: company.displayNameCompany },
+              });
+              setExpanded(!expanded);
+            }}
           >
             {expanded ? "Too much info" : "More informations plz"}
           </a>
