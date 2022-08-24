@@ -44,8 +44,6 @@ export async function getStaticPaths() {
   const companies = await listCompanies();
 
   const paths = companies.map((c) => ({ params: { id: c.id } }));
-  console.log("paths");
-  console.log(paths);
   return { paths, fallback: false };
 }
 

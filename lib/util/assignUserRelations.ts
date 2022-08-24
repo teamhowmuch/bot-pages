@@ -1,5 +1,9 @@
 import { ChatData, RankedCompany, RankedCompanyWithRelations } from "../models";
 
+function matchName(chatDataString: string, companyName: string): boolean {
+  return chatDataString.toLowerCase().includes(companyName.toLowerCase());
+}
+
 export function assignRelations(
   rankedCompanies: RankedCompany[],
   chatData: ChatData
@@ -14,7 +18,7 @@ export function assignRelations(
     const companyName = company.displayNameCompany;
 
     if (
-      chatData.companies.health_insurance.includes(companyName) &&
+      matchName(chatData.companies.health_insurance, companyName) &&
       company.sellsHealthInsurance
     ) {
       company.userRelations.push("healthInsurance");
@@ -32,7 +36,7 @@ export function assignRelations(
     }
 
     if (
-      chatData.companies.travel_insurance.includes(companyName) &&
+      matchName(chatData.companies.travel_insurance, companyName) &&
       company.sellsTravelInsurance
     ) {
       company.userRelations.push("travelInsurance");
@@ -51,7 +55,9 @@ export function assignRelations(
 
     if (
       chatData.companies.banks &&
-      chatData.companies.banks.includes(companyName) &&
+      chatData.companies.banks
+        .map((n) => n.toLowerCase())
+        .includes(companyName.toLowerCase()) &&
       company.sellsBankaccount
     ) {
       company.userRelations.push("bank");
@@ -67,7 +73,6 @@ export function assignRelations(
         company.hasAlternative = true;
       }
     }
-
     return company;
   });
 }

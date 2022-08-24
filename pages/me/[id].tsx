@@ -25,9 +25,9 @@ import { associateSession, trackEvent as tr } from "../../lib/tracking";
 import { assignRelations, rankCompanies } from "../../lib/util";
 
 interface Props {
+  userId: number;
   chatData: ChatData;
   userCompanies: RankedCompanyWithRelations[];
-  debugAllCompanies?: RankedCompanyWithRelations[];
 }
 
 interface Params extends ParsedUrlQuery {
@@ -96,14 +96,13 @@ function renderInsurance(
                         : alternative.travelURL
                     }
                     onClick={() =>
-                      tr({
-                        action: "clickAlternative",
-                        category: "click",
-                        data: {
-                          externalWebsite: "Company Direct",
-                          company: alternative.displayNameCompany,
-                        },
-                      })
+                      push([
+                        "trackEvent",
+                        "Results",
+                        "Click Alternative",
+                        label,
+                        `${alternative.displayNameCompany} DIRECT`,
+                      ])
                     }
                     target="blank"
                   >
@@ -116,14 +115,13 @@ function renderInsurance(
                         : "https://www.independer.nl/reisverzekering/intro.aspx"
                     }
                     onClick={() =>
-                      tr({
-                        action: "clickAlternative",
-                        category: "click",
-                        data: {
-                          externalWebsite: "Independer",
-                          company: alternative.displayNameCompany,
-                        },
-                      })
+                      push([
+                        "trackEvent",
+                        "Results",
+                        "Click Alternative",
+                        label,
+                        `${alternative.displayNameCompany} INDEPENDER`,
+                      ])
                     }
                     target="blank"
                   >
@@ -136,14 +134,13 @@ function renderInsurance(
                         : "https://www.poliswijzer.nl/reisverzekering/doorlopende/vergelijken"
                     }
                     onClick={() =>
-                      tr({
-                        action: "clickAlternative",
-                        category: "click",
-                        data: {
-                          externalWebsite: "Poliswijzer",
-                          company: alternative.displayNameCompany,
-                        },
-                      })
+                      push([
+                        "trackEvent",
+                        "Results",
+                        "Click Alternative",
+                        label,
+                        `${alternative.displayNameCompany} POLISWIJZER`,
+                      ])
                     }
                     target="blank"
                   >
@@ -189,23 +186,56 @@ function renderBanks(
           />
         </div>
       ))}
-      <h1 className="text-3xl pt-5">Best fit for your values</h1>
       {alternative ? (
-        <div>
-          <CompanyComponent
-            company={alternative}
-            chatData={chatData}
-            isAlternative={true}
-          />
-          <a href={alternative.bankURL} target="blank">
-            Go to {alternative.displayNameCompany}
-          </a>
-          <br />
-          <a href="https://www.gretabot.com/how">Sources</a>
-        </div>
+        <>
+          <h1 className="text-3xl pt-5">Better fit for you</h1>
+          <div className="py-3">
+            <h5 className="text-xl"></h5>
+            <CompanyComponent
+              company={alternative}
+              chatData={chatData}
+              isAlternative={true}
+            />
+          </div>
+          <div className="py-3">
+            <div className="p-2 bg-white">
+              <h5 className="text-xl">
+                Base price bank account at {alternative.displayNameCompany} €
+                {alternative.costBankaccount}/mo
+                <small>
+                  {" "}
+                  (
+                  {current
+                    .map(
+                      (c) => `${c.displayNameCompany}: €${c.costBankaccount}/mo`
+                    )
+                    .join(", ")}
+                  )
+                </small>
+              </h5>
+              <a
+                href={alternative.bankURL}
+                target="blank"
+                onClick={() =>
+                  push([
+                    "trackEvent",
+                    "Results",
+                    "Click Alternative",
+                    "bank",
+                    `${alternative.displayNameCompany} Direct`,
+                  ])
+                }
+              >
+                <Button>Go to {alternative.displayNameCompany}</Button>
+              </a>
+              <br />
+            </div>
+          </div>
+        </>
       ) : (
         <p>It is the best, no alternative!</p>
       )}
+      <a href="https://www.gretabot.com/how">Sources</a>
     </div>
   );
 }
@@ -235,7 +265,7 @@ function renderCompanies(
   );
 }
 
-const ChatResults: NextPage<Props> = ({ chatData, userCompanies }) => {
+const ChatResults: NextPage<Props> = ({ userId, chatData, userCompanies }) => {
   const [showDebug, setShowDebug] = useState(false);
 
   const { bot_version, email } = chatData;
@@ -245,8 +275,8 @@ const ChatResults: NextPage<Props> = ({ chatData, userCompanies }) => {
     push(["enableHeartBeatTimer"]);
     push(["trackPageView"]);
     push(["trackAllContentImpressions"]);
-    push(["setUserId", chatData.id]);
-  }, [chatData.id]);
+    push(["setUserId", userId]);
+  }, [userId]);
 
   if (!bot_version || parseInt(bot_version[0]) < 4) {
     return (
@@ -301,8 +331,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
   const { id } = context.params as Params;
   const res = await fetch(`${process.env.API_HOST}/chats/${id}`);
   const json = await res.json();
-
   const chatData = json.data;
+  const userId = json.user_id;
 
   const allCompanies = await listCompanies();
   const rankedCompanies = rankCompanies(allCompanies, chatData);
@@ -314,6 +344,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
 
   return {
     props: {
+      userId,
       chatData,
       userCompanies,
     },
