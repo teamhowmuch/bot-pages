@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",
+    "@socialgouv/matomo-next": "^1.4.0",
     "@types/cors": "^2.8.12",
     "cors": "^2.8.5",
     "graphql": "^16.5.0",

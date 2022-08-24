@@ -1,26 +1,19 @@
 import type { AppProps } from "next/app";
 import Script from "next/script";
+import { init as initMatomo } from "@socialgouv/matomo-next";
 import "../styles/globals.css";
+import { useEffect } from "react";
+
+const MATOMO_URL = process.env.NEXT_PUBLIC_MATOMO_URL as string;
+const MATOMO_SITE_ID = process.env.NEXT_PUBLIC_MATOMO_SITE_ID as string;
 
 function MyApp({ Component, pageProps }: AppProps) {
+  useEffect(() => {
+    initMatomo({ url: MATOMO_URL, siteId: MATOMO_SITE_ID });
+  }, []);
+
   return (
     <>
-      <Script id="matomo-analytics" strategy="afterInteractive">
-        {`
-          var _paq = window._paq = window._paq || [];
-          /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-          _paq.push(['trackPageView']);
-          _paq.push(['enableLinkTracking']);
-          (function() {
-            var u="https://grobot.matomo.cloud/";
-            _paq.push(['setTrackerUrl', u+'matomo.php']);
-            _paq.push(['setSiteId', '1']);
-            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-            g.async=true; g.src='//cdn.matomo.cloud/grobot.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
-          })();
-        `}
-      </Script>
-
       <Script id="hotjar" strategy="afterInteractive">
         {`
           (function(h,o,t,j,a,r){

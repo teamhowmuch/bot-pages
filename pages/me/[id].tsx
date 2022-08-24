@@ -1,6 +1,6 @@
+import { push } from "@socialgouv/matomo-next";
 import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
 import { ParsedUrlQuery } from "querystring";
 import { useEffect, useState } from "react";
 import {
@@ -241,19 +241,12 @@ const ChatResults: NextPage<Props> = ({ chatData, userCompanies }) => {
   const { bot_version, email } = chatData;
 
   useEffect(() => {
-    async function trackPageView() {
-      await tr({
-        action: "pageView",
-        category: "pageview",
-        data: {
-          bot_version,
-        },
-      });
-
-      await associateSession({ user_email: email });
-    }
-    trackPageView();
-  }, [bot_version, email]);
+    push(["enableLinkTracking"]);
+    push(["enableHeartBeatTimer"]);
+    push(["trackPageView"]);
+    push(["trackAllContentImpressions"]);
+    push(["setUserId", chatData.id]);
+  }, [chatData.id]);
 
   if (!bot_version || parseInt(bot_version[0]) < 4) {
     return (
