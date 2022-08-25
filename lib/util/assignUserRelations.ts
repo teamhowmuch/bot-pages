@@ -1,6 +1,12 @@
 import { ChatData, RankedCompany, RankedCompanyWithRelations } from "../models";
 
-function matchName(chatDataString: string, companyName: string): boolean {
+function matchName(
+  chatDataString: string | null | undefined,
+  companyName: string | null | undefined
+): boolean {
+  if (!chatDataString || !companyName) {
+    return false;
+  }
   return chatDataString.toLowerCase().includes(companyName.toLowerCase());
 }
 
