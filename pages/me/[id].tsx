@@ -79,7 +79,7 @@ function renderInsurance(
         />
         {alternative ? (
           <>
-            <h1 className="text-3xl pt-5">Better fit for you</h1>
+            <h1 className="text-3xl py-3">Better fit for you</h1>
             <CompanyComponent
               company={alternative}
               chatData={chatData}
@@ -202,8 +202,8 @@ function renderBanks(
         ))}
         {alternative ? (
           <>
-            <h1 className="text-3xl pt-5">Better fit for you</h1>
-            <div className="py-3">
+            <h1 className="text-3xl py-3">Better fit for you</h1>
+            <div className="">
               <h5 className="text-xl"></h5>
               <CompanyComponent
                 company={alternative}
