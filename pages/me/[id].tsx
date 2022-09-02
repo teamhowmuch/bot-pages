@@ -307,21 +307,49 @@ const ChatResults: NextPage<Props> = ({ userId, chatData, userCompanies }) => {
           label="Travel insurance"
           emoji="🏝"
           active={selectedCompanyType === "travel_insurance"}
-          color="green"
+          color={
+            userCompanies.every(
+              (c) => !c.userRelations.includes("travelInsurance")
+            )
+              ? "gray"
+              : userCompanies.some((c) =>
+                  c.userRelations.includes("travelInsuranceAlternative")
+                )
+              ? "red"
+              : "green"
+          }
           onClick={() => onClickCompanySelection("travel_insurance")}
         />
         <CompanyButton
           label="Health insurance"
           emoji="🏥"
           active={selectedCompanyType === "health_insurance"}
-          color="green"
+          color={
+            userCompanies.every(
+              (c) => !c.userRelations.includes("healthInsurance")
+            )
+              ? "gray"
+              : userCompanies.some((c) =>
+                  c.userRelations.includes("healthInsuranceAlternative")
+                )
+              ? "red"
+              : "green"
+          }
           onClick={() => onClickCompanySelection("health_insurance")}
         />
         <CompanyButton
           label="Banks"
           emoji="🏦"
           active={selectedCompanyType === "banks"}
-          color="green"
+          color={
+            userCompanies.every((c) => !c.userRelations.includes("bank"))
+              ? "gray"
+              : userCompanies.some((c) =>
+                  c.userRelations.includes("bankAlternative")
+                )
+              ? "red"
+              : "green"
+          }
           onClick={() => onClickCompanySelection("banks")}
         />
       </div>
