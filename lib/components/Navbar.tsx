@@ -9,10 +9,11 @@ export function Navbar(props: Props) {
     <div className="text-center bg-white py-1">
       <Container>
         <div className="flex items-center">
+          <div className="w-36"></div>
           <div className="flex-grow">
             <h1 className="text-xl">🤖 grobot</h1>
           </div>
-          <div>
+          <div className="w-36">
             <Link
               href="https://landbot.pro/v3/H-1344766-1F4J8SWG83O073XV/index.html"
               target="_blank"
