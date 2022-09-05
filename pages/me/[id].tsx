@@ -164,7 +164,7 @@ function renderInsurance(
               </div>
             </div>
             <br />
-            <a href="https://www.grobot.com/how">Sources</a>
+            <a href="https://www.grobot.nl/how">Sources</a>
           </>
         ) : (
           <p>It is the best, no alternative!</p>
@@ -250,7 +250,7 @@ function renderBanks(
         ) : (
           <p>It is the best, no alternative!</p>
         )}
-        <a href="https://www.grobot.com/how">Sources</a>
+        <a href="https://www.grobot.nl/how">Sources</a>
       </div>
     </div>
   );
