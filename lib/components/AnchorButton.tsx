@@ -6,13 +6,11 @@ import {
 } from "react";
 import classnames from "classnames";
 
-type Props = DetailedHTMLProps<
-  ButtonHTMLAttributes<HTMLButtonElement>,
-  HTMLButtonElement
-> & {
+type Props = {
   variant?: "action";
   size?: "sm" | "md" | "lg";
   children?: ReactNode;
+  type?: "button" | "a";
 };
 
 export function Button({
@@ -31,9 +29,11 @@ export function Button({
     }
   );
 
+  let Element: "button" | "a" = type === "button" ? "button" : "a";
+
   return (
-    <button className={className} {...rest}>
+    <Element className={className} {...rest}>
       {children}
-    </button>
+    </Element>
   );
 }

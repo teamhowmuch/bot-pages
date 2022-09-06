@@ -13,6 +13,7 @@ import {
   CompanyButton,
   Card,
   FlipCard,
+  SendEmail,
 } from "../../lib/components";
 import { listCompanies } from "../../lib/graphql";
 import {
@@ -178,19 +179,25 @@ function renderInsurance(
                 </p>
                 <div className="grid py-2 grid-cols-1 sm:grid-cols-3 gap-2">
                   <FlipCard
-                    text="Can't switch right now, I'm on the toilet (or train, work,
-                      w/e...)"
+                    text="I can't switch right now, I'm on the toilet (or train, work,
+                      whatever...)"
                     emoji="🚽"
                   >
-                    <p>Some back content</p>
+                    <div>
+                      <p>
+                        Best of luck to you. Would you like to receive a
+                        reminder next Sunday?
+                      </p>
+                      <SendEmail sendGridTemplateName="hsdfoi" />
+                    </div>
                   </FlipCard>
 
                   <FlipCard
                     text="I won't ever leave my insurance company their service is
-                      just the best..."
+                      just too good!"
                     emoji="🤩"
                   >
-                    <p>Some back content</p>
+                    <p>Good </p>
                   </FlipCard>
                   <FlipCard
                     text="The price difference is too much for me..."
@@ -202,21 +209,45 @@ function renderInsurance(
                     text="I'm just a lazy bastard and can't be bothered."
                     emoji="🥱"
                   >
-                    <p>Some back content</p>
+                    <p>Click here for a free month of Netflix</p>
                   </FlipCard>
 
                   <FlipCard
                     text="This is the final drop. I'm switching NOW!"
                     emoji="🏃"
                   >
-                    <p>Some back content</p>
+                    <a
+                      href={
+                        label === "health"
+                          ? alternative.healthURL
+                          : alternative.travelURL
+                      }
+                      onClick={() =>
+                        push([
+                          "trackEvent",
+                          "Results",
+                          "Click Alternative",
+                          label,
+                          `${alternative.displayNameCompany} DIRECT`,
+                        ])
+                      }
+                      target="blank"
+                    >
+                      <Button>Go to {alternative.displayNameCompany}</Button>
+                    </a>
                   </FlipCard>
 
                   <FlipCard
                     text="I need to discuss this with my partner first..."
                     emoji="🧑‍🤝‍🧑"
                   >
-                    <p>Some back content</p>
+                    <div>
+                      <p>
+                        Affirmative. Would you like me to forward them these
+                        results?
+                      </p>
+                      <SendEmail sendGridTemplateName="hsdfoi" />
+                    </div>
                   </FlipCard>
 
                   <FlipCard
@@ -230,7 +261,7 @@ function renderInsurance(
                     text="What's the source of this information?"
                     emoji="🤨"
                   >
-                    <p>Some back content</p>
+                    <p>View sources</p>
                   </FlipCard>
                 </div>
               </>
