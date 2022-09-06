@@ -11,6 +11,8 @@ import {
   Button,
   Container,
   CompanyButton,
+  Card,
+  FlipCard,
 } from "../../lib/components";
 import { listCompanies } from "../../lib/graphql";
 import {
@@ -85,83 +87,154 @@ function renderInsurance(
               isAlternative={true}
             />
             <div className="py-3">
-              <div className="p-2 bg-white">
-                <h5 className="text-xl">
-                  {alternative.displayNameCompany} base pricing: €
-                  {label === "health"
-                    ? alternative.costHealthInsurance
-                    : alternative.costTravelInsurance}
-                  /month{" "}
-                  <small>
-                    ({current.displayNameCompany} = €
+              <Card>
+                <>
+                  <h5 className="text-xl">
+                    {alternative.displayNameCompany} base pricing: €
                     {label === "health"
-                      ? current.costHealthInsurance
-                      : current.costTravelInsurance}
-                    /month)
-                  </small>
-                </h5>
+                      ? alternative.costHealthInsurance
+                      : alternative.costTravelInsurance}
+                    /month{" "}
+                    <small>
+                      ({current.displayNameCompany} = €
+                      {label === "health"
+                        ? current.costHealthInsurance
+                        : current.costTravelInsurance}
+                      /month)
+                    </small>
+                  </h5>
 
-                <div className="flex gap-1">
-                  <a
-                    href={
-                      label === "health"
-                        ? alternative.healthURL
-                        : alternative.travelURL
-                    }
-                    onClick={() =>
-                      push([
-                        "trackEvent",
-                        "Results",
-                        "Click Alternative",
-                        label,
-                        `${alternative.displayNameCompany} DIRECT`,
-                      ])
-                    }
-                    target="blank"
-                  >
-                    <Button>Go to {alternative.displayNameCompany}</Button>
-                  </a>
-                  <a
-                    href={
-                      label === "health"
-                        ? "https://www.independer.nl/zorgverzekering/intro.aspx"
-                        : "https://www.independer.nl/reisverzekering/intro.aspx"
-                    }
-                    onClick={() =>
-                      push([
-                        "trackEvent",
-                        "Results",
-                        "Click Alternative",
-                        label,
-                        `${alternative.displayNameCompany} INDEPENDER`,
-                      ])
-                    }
-                    target="blank"
-                  >
-                    <Button>Compare on Independer</Button>
-                  </a>
-                  <a
-                    href={
-                      label === "health"
-                        ? "https://www.poliswijzer.nl/zorgverzekering"
-                        : "https://www.poliswijzer.nl/reisverzekering/doorlopende/vergelijken"
-                    }
-                    onClick={() =>
-                      push([
-                        "trackEvent",
-                        "Results",
-                        "Click Alternative",
-                        label,
-                        `${alternative.displayNameCompany} POLISWIJZER`,
-                      ])
-                    }
-                    target="blank"
-                  >
-                    <Button>Compare on PolisWijzer</Button>
-                  </a>
-                </div>
-              </div>
+                  <div className="flex gap-1">
+                    <a
+                      href={
+                        label === "health"
+                          ? alternative.healthURL
+                          : alternative.travelURL
+                      }
+                      onClick={() =>
+                        push([
+                          "trackEvent",
+                          "Results",
+                          "Click Alternative",
+                          label,
+                          `${alternative.displayNameCompany} DIRECT`,
+                        ])
+                      }
+                      target="blank"
+                    >
+                      <Button>Go to {alternative.displayNameCompany}</Button>
+                    </a>
+                    <a
+                      href={
+                        label === "health"
+                          ? "https://www.independer.nl/zorgverzekering/intro.aspx"
+                          : "https://www.independer.nl/reisverzekering/intro.aspx"
+                      }
+                      onClick={() =>
+                        push([
+                          "trackEvent",
+                          "Results",
+                          "Click Alternative",
+                          label,
+                          `${alternative.displayNameCompany} INDEPENDER`,
+                        ])
+                      }
+                      target="blank"
+                    >
+                      <Button>Compare on Independer</Button>
+                    </a>
+                    <a
+                      href={
+                        label === "health"
+                          ? "https://www.poliswijzer.nl/zorgverzekering"
+                          : "https://www.poliswijzer.nl/reisverzekering/doorlopende/vergelijken"
+                      }
+                      onClick={() =>
+                        push([
+                          "trackEvent",
+                          "Results",
+                          "Click Alternative",
+                          label,
+                          `${alternative.displayNameCompany} POLISWIJZER`,
+                        ])
+                      }
+                      target="blank"
+                    >
+                      <Button>Compare on PolisWijzer</Button>
+                    </a>
+                  </div>
+                </>
+              </Card>
             </div>
+            <Card>
+              <>
+                <h1 className="text-3xl pb-3">
+                  I forgot to tell you about my other super power...
+                </h1>
+                <p>
+                  I read minds 🤖🔮... sort of... or at least make accurate
+                  guesses... here's what you're definitely thinking (but plz
+                  click just to confirm):
+                </p>
+                <div className="grid justify-between justify-center py-2 grid-cols-1 sm:grid-cols-3 gap-2">
+                  <FlipCard
+                    text="Can't switch right now, I'm on the toilet (or train, work,
+                      w/e...)"
+                    emoji="🚽"
+                  >
+                    <p>Some back content</p>
+                  </FlipCard>
+
+                  <FlipCard
+                    text="I won't ever leave my insurance company their service is
+                      just the best..."
+                    emoji="🤩"
+                  >
+                    <p>Some back content</p>
+                  </FlipCard>
+                  <FlipCard
+                    text="The price difference is too much for me..."
+                    emoji="💸"
+                  >
+                    <p>Some back content</p>
+                  </FlipCard>
+                  <FlipCard
+                    text="I'm just a lazy bastard and can't be bothered."
+                    emoji="🥱"
+                  >
+                    <p>Some back content</p>
+                  </FlipCard>
+
+                  <FlipCard
+                    text="This is the final drop. I'm switching NOW!"
+                    emoji="🏃"
+                  >
+                    <p>Some back content</p>
+                  </FlipCard>
+
+                  <FlipCard
+                    text="I need to discuss this with my partner first..."
+                    emoji="🧑‍🤝‍🧑"
+                  >
+                    <p>Some back content</p>
+                  </FlipCard>
+
+                  <FlipCard
+                    text="I want to switch but it's such a hassle."
+                    emoji="🤦"
+                  >
+                    <p>Some back content</p>
+                  </FlipCard>
+
+                  <FlipCard
+                    text="What's the source of this information?"
+                    emoji="🤨"
+                  >
+                    <p>Some back content</p>
+                  </FlipCard>
+                </div>
+              </>
+            </Card>
             <br />
             <a href="https://www.grobot.nl/how" className="underline">
               Sources
