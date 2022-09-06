@@ -176,9 +176,9 @@ function renderInsurance(
                   guesses... here's what you're definitely thinking (but plz
                   click just to confirm):
                 </p>
-                <div className="grid justify-between justify-center py-2 grid-cols-1 sm:grid-cols-3 gap-2">
+                <div className="grid py-2 grid-cols-1 sm:grid-cols-3 gap-2">
                   <FlipCard
-                    text="Can't switch right now, I'm on the toilet (or train, work,
+                    text="Can&apos;t switch right now, I&apos;m on the toilet (or train, work,
                       w/e...)"
                     emoji="🚽"
                   >
@@ -186,7 +186,7 @@ function renderInsurance(
                   </FlipCard>
 
                   <FlipCard
-                    text="I won't ever leave my insurance company their service is
+                    text="I won&apos;t ever leave my insurance company their service is
                       just the best..."
                     emoji="🤩"
                   >
@@ -199,7 +199,7 @@ function renderInsurance(
                     <p>Some back content</p>
                   </FlipCard>
                   <FlipCard
-                    text="I'm just a lazy bastard and can't be bothered."
+                    text="I&apos;m just a lazy bastard and can&apos;t be bothered."
                     emoji="🥱"
                   >
                     <p>Some back content</p>
@@ -220,14 +220,14 @@ function renderInsurance(
                   </FlipCard>
 
                   <FlipCard
-                    text="I want to switch but it's such a hassle."
+                    text="I want to switch but it&apos;s such a hassle."
                     emoji="🤦"
                   >
                     <p>Some back content</p>
                   </FlipCard>
 
                   <FlipCard
-                    text="What's the source of this information?"
+                    text="What&apos;s the source of this information?"
                     emoji="🤨"
                   >
                     <p>Some back content</p>
