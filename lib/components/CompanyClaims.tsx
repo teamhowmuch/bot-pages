@@ -1,3 +1,4 @@
+import { push } from "@socialgouv/matomo-next";
 import { useMemo, useState } from "react";
 import {
   ChatData,
@@ -6,7 +7,6 @@ import {
   COMPANY_CLAIM_FIELDS,
   UserValue,
 } from "../models";
-import { trackEvent } from "../tracking";
 
 interface Props {
   company: RankedCompanyWithRelations;
@@ -86,11 +86,12 @@ export function CompanyClaims({ company, chatData }: Props) {
               cursor: "pointer",
             }}
             onClick={() => {
-              trackEvent({
-                action: "Click more information",
-                category: "click",
-                data: { company: company.displayNameCompany },
-              });
+              push([
+                "trackEvent",
+                "Results",
+                "Click More Information",
+                `${company.displayNameCompany} Direct`,
+              ]);
               setExpanded(!expanded);
             }}
           >

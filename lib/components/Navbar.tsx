@@ -17,8 +17,11 @@ export function Navbar(props: Props) {
             <Link
               href="https://landbot.pro/v3/H-1344766-1F4J8SWG83O073XV/index.html"
               target="_blank"
+              passHref
             >
-              <Button size="sm">Give feedback</Button>
+              <a>
+                <Button size="sm">Give feedback</Button>
+              </a>
             </Link>
           </div>
         </div>

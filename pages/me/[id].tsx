@@ -23,7 +23,6 @@ import {
   CompanyType,
   CompanyRelation,
 } from "../../lib/models";
-import { associateSession, trackEvent as tr } from "../../lib/tracking";
 import { assignRelations, rankCompanies } from "../../lib/util";
 import IdkGif from "../../public/gifs/trump_idk.gif";
 
@@ -164,7 +163,9 @@ function renderInsurance(
               </div>
             </div>
             <br />
-            <a href="https://www.grobot.nl/how" className="underline">Sources</a>
+            <a href="https://www.grobot.nl/how" className="underline">
+              Sources
+            </a>
           </>
         ) : (
           <p>It is the best, no alternative!</p>
@@ -250,7 +251,9 @@ function renderBanks(
         ) : (
           <p>It is the best, no alternative!</p>
         )}
-        <a href="https://www.grobot.nl/how" className="underline">Sources</a>
+        <a href="https://www.grobot.nl/how" className="underline">
+          Sources
+        </a>
       </div>
     </div>
   );
