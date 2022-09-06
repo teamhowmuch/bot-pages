@@ -11,7 +11,10 @@ const Me: NextPage = () => {
       </Head>
 
       <main>
-        <h1>Errr... something went wrong. If you provided an email address, your results are probably in your inbox.</h1>
+        <h1>
+          Errr... something went wrong. If you provided an email address, your
+          results are probably in your inbox.
+        </h1>
       </main>
     </div>
   );
