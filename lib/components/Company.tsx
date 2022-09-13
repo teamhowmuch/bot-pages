@@ -33,8 +33,8 @@ function renderRatingGif(hasAlternative: boolean) {
 export function Company({ company, chatData, isAlternative }: Props) {
   return (
     <div className="bg-white rounded-xl p-3">
-      <div style={{ width: "100%", display: "flex" }}>
-        <div style={{ width: 180 }}>
+      <div className="w-full flex justify-center">
+        <div style={{ width: 180 }} className="">
           <Image
             src={company.logo.url}
             height={100}
@@ -42,7 +42,6 @@ export function Company({ company, chatData, isAlternative }: Props) {
             alt={`logo-${company.displayNameCompany}`}
           />
         </div>
-        {!isAlternative && renderRatingGif(company.hasAlternative)}
       </div>
       <CompanyClaims company={company} chatData={chatData} />
     </div>

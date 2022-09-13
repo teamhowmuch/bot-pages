@@ -71,9 +71,9 @@ function renderInsurance(
   }
 
   return (
-    <div className="py-5 rounded">
-      <div className="py-10">
-        <h1 className="text-3xl py-3">Your {label} insurance</h1>
+    <Card>
+      <div>
+        <h1 className="text-3xl text-center py-3">Your {label} insurance</h1>
         <CompanyComponent
           company={current}
           chatData={chatData}
@@ -81,7 +81,7 @@ function renderInsurance(
         />
         {alternative ? (
           <>
-            <h1 className="text-3xl py-3">Better fit for you</h1>
+            <h1 className="text-3xl py-3 text-center">Better fit for you</h1>
             <CompanyComponent
               company={alternative}
               chatData={chatData}
@@ -167,105 +167,7 @@ function renderInsurance(
                 </>
               </Card>
             </div>
-            <Card>
-              <>
-                <h1 className="text-3xl pb-3">
-                  I forgot to tell you about my other super power...
-                </h1>
-                <p>
-                  I read minds 🤖🔮... sort of... or at least make accurate
-                  guesses... here&quot;s what you&quot;re definitely thinking
-                  (but plz click just to confirm):
-                </p>
-                <div className="grid py-2 grid-cols-1 sm:grid-cols-3 gap-2">
-                  <FlipCard
-                    text="I can't switch right now, I'm on the toilet (or train, work,
-                      whatever...)"
-                    emoji="🚽"
-                  >
-                    <div>
-                      <p>
-                        Best of luck to you. Would you like to receive a
-                        reminder next Sunday?
-                      </p>
-                      <SendEmail sendGridTemplateName="hsdfoi" />
-                    </div>
-                  </FlipCard>
 
-                  <FlipCard
-                    text="I won't ever leave my insurance company their service is
-                      just too good!"
-                    emoji="🤩"
-                  >
-                    <p>Good </p>
-                  </FlipCard>
-                  <FlipCard
-                    text="The price difference is too much for me..."
-                    emoji="💸"
-                  >
-                    <p>Some back content</p>
-                  </FlipCard>
-                  <FlipCard
-                    text="I'm just a lazy bastard and can't be bothered."
-                    emoji="🥱"
-                  >
-                    <p>Click here for a free month of Netflix</p>
-                  </FlipCard>
-
-                  <FlipCard
-                    text="This is the final drop. I'm switching NOW!"
-                    emoji="🏃"
-                  >
-                    <a
-                      href={
-                        label === "health"
-                          ? alternative.healthURL
-                          : alternative.travelURL
-                      }
-                      onClick={() =>
-                        push([
-                          "trackEvent",
-                          "Results",
-                          "Click Alternative",
-                          label,
-                          `${alternative.displayNameCompany} DIRECT`,
-                        ])
-                      }
-                      target="blank"
-                    >
-                      <Button>Go to {alternative.displayNameCompany}</Button>
-                    </a>
-                  </FlipCard>
-
-                  <FlipCard
-                    text="I need to discuss this with my partner first..."
-                    emoji="🧑‍🤝‍🧑"
-                  >
-                    <div>
-                      <p>
-                        Affirmative. Would you like me to forward them these
-                        results?
-                      </p>
-                      <SendEmail sendGridTemplateName="hsdfoi" />
-                    </div>
-                  </FlipCard>
-
-                  <FlipCard
-                    text="I want to switch but it's such a hassle."
-                    emoji="🤦"
-                  >
-                    <p>Some back content</p>
-                  </FlipCard>
-
-                  <FlipCard
-                    text="What's the source of this information?"
-                    emoji="🤨"
-                  >
-                    <p>View sources</p>
-                  </FlipCard>
-                </div>
-              </>
-            </Card>
             <br />
             <a href="https://www.grobot.nl/how" className="underline">
               Sources
@@ -275,7 +177,7 @@ function renderInsurance(
           <p>It is the best, no alternative!</p>
         )}
       </div>
-    </div>
+    </Card>
   );
 }
 

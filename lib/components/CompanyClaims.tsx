@@ -16,7 +16,7 @@ interface Props {
 const valueLabels: Record<UserValue, string> = {
   animal_welfare: "Animal factory farming",
   biodiversity: "Biodiversity",
-  ceo_pay: "Fair pay",
+  ceo_pay: "Fair worker pay 👩‍💼👨‍🔧",
   climate: "Climate",
   fair_pay: "Fair pay",
   gender_equality: "Gender equality",
@@ -71,9 +71,7 @@ export function CompanyClaims({ company, chatData }: Props) {
 
   return (
     <>
-      <h6 className="text-xl">
-        How does {company.displayNameCompany} perform?
-      </h6>
+      <h6 className="text-lg">You strongly value</h6>
       <ul>
         {claims.map((c, i) => (
           <li key={i}>{c}</li>
