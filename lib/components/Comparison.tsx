@@ -79,14 +79,6 @@ export function Comparison({
             {current.map((c) => (
               <th scope="col" key={c.id}>
                 <span className="font-bold">{c.displayNameCompany}</span>
-                <div style={{ width: 36 }} className="">
-                  <Image
-                    src={c.logo.url}
-                    height={20}
-                    width={36}
-                    alt={`logo-${c.displayNameCompany}`}
-                  />
-                </div>
               </th>
             ))}
             {alternatives.map((a) => (
@@ -102,12 +94,12 @@ export function Comparison({
               <span className="font-bold">Base pricing</span>
             </td>
             {current.map((c) => (
-              <td scope="col" key={c.id}>
+              <td scope="col" key={c.id} className="text-center">
                 €{c.costTravelInsurance}
               </td>
             ))}
             {alternatives.map((a) => (
-              <td scope="col" key={`td-${a.id}`}>
+              <td scope="col" key={`td-${a.id}`} className="text-center">
                 €{a.costTravelInsurance}
               </td>
             ))}
@@ -118,7 +110,7 @@ export function Comparison({
             <td></td>
 
             {alternatives.map((a) => (
-              <td scope="col" key={`td-${a.id}`}>
+              <td scope="col" key={`td-${a.id}`} className="text-center">
                 <div className="py-3">
                   <a
                     href={a.travelURL}
@@ -438,12 +430,12 @@ export function Comparison({
               <span className="font-bold">Base pricing</span>
             </td>
             {current.map((c) => (
-              <td scope="col" key={c.id}>
+              <td scope="col" key={c.id} className="text-center">
                 €{c.costHealthInsurance}
               </td>
             ))}
             {alternatives.map((a) => (
-              <td scope="col" key={`td-${a.id}`}>
+              <td scope="col" key={`td-${a.id}`} className="text-center">
                 €{a.costHealthInsurance}
               </td>
             ))}
@@ -453,7 +445,7 @@ export function Comparison({
             <td></td>
             <td></td>
             {alternatives.map((a) => (
-              <td scope="col" key={`td-${a.id}`}>
+              <td scope="col" key={`td-${a.id}`} className="text-center">
                 <div className="py-3">
                   <a
                     href={a.travelURL}
