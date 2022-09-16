@@ -237,7 +237,8 @@ export function Comparison({
             2️⃣ make sure this alternative suits your needs.
           </Title>
           <p>
-            You&apos;ll probably do your own research, but here are some things that might help you decide:
+            You&apos;ll probably do your own research, but here are some things
+            that might help you decide:
           </p>
           <table className="min-w-full my-3">
             <thead className="border-b">
@@ -322,7 +323,7 @@ export function Comparison({
 
               <tr>
                 <td className="p-2 text-right">
-                  <span className="font-bold">Has Apple Pay</span>
+                  <span className="font-bold">Apple Pay</span>
                 </td>
                 {current.map((c) => (
                   <td scope="col" key={c.id} className="text-center">
@@ -338,7 +339,7 @@ export function Comparison({
 
               <tr>
                 <td className="p-2 text-right">
-                  <span className="font-bold">Has Google Pay</span>
+                  <span className="font-bold">Google Pay</span>
                 </td>
                 {current.map((c) => (
                   <td scope="col" key={c.id} className="text-center">
@@ -598,16 +599,16 @@ export function Comparison({
   function renderMain() {
     return (
       <div>
-        <div className="py-5">
-          <Title align="center">{sectionTitles[selectedComparison]}</Title>
-        </div>
         <div className="grid grid-cols-1 gap-2">
-          <Card>{renderCurrent()}</Card>
+          <Card>
+            <Title align="center">{sectionTitles[selectedComparison]}</Title>
+            {renderCurrent()}
+          </Card>
 
           <Card>
             {alternatives.length > 0 ? (
               <>
-                <Title>Alternatives you might consider</Title>
+                <Title align="center">Alternatives you might consider</Title>
                 {renderAlternatives()}
               </>
             ) : (
@@ -620,7 +621,7 @@ export function Comparison({
 
           {alternatives.length > 0 && (
             <Card>
-              <Title>How to Switch</Title>
+              <Title align="center">How to Switch</Title>
               {selectedComparison === "health_insurance" &&
                 renderHealthSwitch()}
               {selectedComparison === "travel_insurance" &&
