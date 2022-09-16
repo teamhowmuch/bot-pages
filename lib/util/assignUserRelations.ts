@@ -1,4 +1,32 @@
-import { ChatData, RankedCompany, RankedCompanyWithRelations } from "../models";
+import {
+  ChatData,
+  CompanyRelation,
+  CompanyType,
+  RankedCompany,
+  RankedCompanyWithRelations,
+} from "../models";
+
+export const currentRelationMap: Record<CompanyType, CompanyRelation> = {
+  health_insurance: "healthInsurance",
+  travel_insurance: "travelInsurance",
+  banks: "bank",
+};
+
+export const alternativeRelationMap: Record<CompanyType, CompanyRelation> = {
+  health_insurance: "healthInsuranceAlternative",
+  travel_insurance: "travelInsuranceAlternative",
+  banks: "bankAlternative",
+};
+
+export function filterCurrent(selectedCompanyType: CompanyType) {
+  return (company: RankedCompanyWithRelations) =>
+    company.userRelations.includes(currentRelationMap[selectedCompanyType]);
+}
+
+export function filterAlternative(selectedCompanyType: CompanyType) {
+  return (company: RankedCompanyWithRelations) =>
+    company.userRelations.includes(alternativeRelationMap[selectedCompanyType]);
+}
 
 function matchName(
   chatDataString: string | null | undefined,

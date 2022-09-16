@@ -1,6 +1,5 @@
 import { push } from "@socialgouv/matomo-next";
 import Image from "next/image";
-import { ReactNode, useEffect } from "react";
 import {
   ChatData,
   CompanyRelation,
@@ -13,6 +12,13 @@ import { Company } from "./Company";
 import { CompanyRating } from "./CompanyRating";
 import { NothingToSeeHere } from "./NothingToSeeHere";
 import { Title } from "./Title";
+import YesGif from "../../public/gifs/yes.gif";
+import {
+  alternativeRelationMap,
+  currentRelationMap,
+  filterAlternative,
+  filterCurrent,
+} from "../util";
 
 type Props = {
   selectedComparison: CompanyType;
@@ -25,28 +31,6 @@ const sectionTitles: Record<CompanyType, string> = {
   travel_insurance: "Your travel insurance",
   banks: "Your bank",
 };
-
-const currentRelationMap: Record<CompanyType, CompanyRelation> = {
-  health_insurance: "healthInsurance",
-  travel_insurance: "travelInsurance",
-  banks: "bank",
-};
-
-const alternativeRelationMap: Record<CompanyType, CompanyRelation> = {
-  health_insurance: "healthInsuranceAlternative",
-  travel_insurance: "travelInsuranceAlternative",
-  banks: "bankAlternative",
-};
-
-function filterCurrent(selectedCompanyType: CompanyType) {
-  return (company: RankedCompanyWithRelations) =>
-    company.userRelations.includes(currentRelationMap[selectedCompanyType]);
-}
-
-function filterAlternative(selectedCompanyType: CompanyType) {
-  return (company: RankedCompanyWithRelations) =>
-    company.userRelations.includes(alternativeRelationMap[selectedCompanyType]);
-}
 
 export function Comparison({
   selectedComparison,
@@ -461,8 +445,17 @@ export function Comparison({
           <Card>{renderCurrent()}</Card>
 
           <Card>
-            <Title>Alternatives you might consider</Title>
-            {renderAlternatives()}
+            {alternatives.length > 0 ? (
+              <>
+                <Title>Alternatives you might consider</Title>
+                {renderAlternatives()}
+              </>
+            ) : (
+              <>
+                <Title>I didn&apos;t find a better match for you!</Title>
+                <Image src={YesGif} alt="yess" width={500} height={230} />
+              </>
+            )}
           </Card>
 
           {alternatives.length > 0 && (

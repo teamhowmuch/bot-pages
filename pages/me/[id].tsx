@@ -28,7 +28,12 @@ import {
   CompanyType,
   CompanyRelation,
 } from "../../lib/models";
-import { assignRelations, rankCompanies } from "../../lib/util";
+import {
+  assignRelations,
+  filterAlternative,
+  filterCurrent,
+  rankCompanies,
+} from "../../lib/util";
 
 interface Props {
   userId: number;
@@ -49,6 +54,30 @@ function renderPre() {
       </p>
     </div>
   );
+}
+
+function calculateFitColor(
+  userCompanies: RankedCompanyWithRelations[],
+  companyType: CompanyType
+): "green" | "yellow" | "red" | "gray" {
+  const current = userCompanies.filter(filterCurrent(companyType));
+  const alternatives = userCompanies.filter(filterAlternative(companyType));
+
+  if (current.length === 0) {
+    return "gray";
+  }
+
+  const bestAlternative = Math.max(...alternatives.map((c) => c.score));
+  const worstCurrent = Math.min(...current.map((c) => c.score));
+  const differenceRatio = (bestAlternative - worstCurrent) / worstCurrent;
+
+  if (differenceRatio >= 1) {
+    return "red";
+  } else if (differenceRatio < 1 && differenceRatio >= 0) {
+    return "yellow";
+  } else {
+    return "green";
+  }
 }
 
 const ChatResults: NextPage<Props> = ({ userId, chatData, userCompanies }) => {
@@ -90,49 +119,22 @@ const ChatResults: NextPage<Props> = ({ userId, chatData, userCompanies }) => {
           label="Travel insurance"
           emoji="🏝"
           active={selectedCompanyType === "travel_insurance"}
-          color={
-            userCompanies.every(
-              (c) => !c.userRelations.includes("travelInsurance")
-            )
-              ? "gray"
-              : userCompanies.some((c) =>
-                  c.userRelations.includes("travelInsuranceAlternative")
-                )
-              ? "red"
-              : "green"
-          }
+          color={calculateFitColor(userCompanies, "travel_insurance")}
           onClick={() => onClickCompanySelection("travel_insurance")}
         />
+
         <CompanyButton
           label="Health insurance"
           emoji="🏥"
           active={selectedCompanyType === "health_insurance"}
-          color={
-            userCompanies.every(
-              (c) => !c.userRelations.includes("healthInsurance")
-            )
-              ? "gray"
-              : userCompanies.some((c) =>
-                  c.userRelations.includes("healthInsuranceAlternative")
-                )
-              ? "red"
-              : "green"
-          }
+          color={calculateFitColor(userCompanies, "health_insurance")}
           onClick={() => onClickCompanySelection("health_insurance")}
         />
         <CompanyButton
           label="Banks"
           emoji="🏦"
           active={selectedCompanyType === "banks"}
-          color={
-            userCompanies.every((c) => !c.userRelations.includes("bank"))
-              ? "gray"
-              : userCompanies.some((c) =>
-                  c.userRelations.includes("bankAlternative")
-                )
-              ? "red"
-              : "green"
-          }
+          color={calculateFitColor(userCompanies, "banks")}
           onClick={() => onClickCompanySelection("banks")}
         />
       </div>
