@@ -38,6 +38,13 @@ export type Company = {
   antiTaxAvoidanceScore: number;
   antiWeaponsScore: number;
   equalityScore: number;
+
+  bankRatingConsumentenbond?: number;
+  onlineBankingRatingConsumentenbond?: number;
+  serviceRatingBankingConsumentenbond?: number;
+
+  hasApplePay?: boolean;
+  hasGooglePay?: boolean;
 };
 
 export type CompanyRelation =

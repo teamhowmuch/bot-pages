@@ -43,6 +43,13 @@ const companiesQuery = gql`
       antiTaxAvoidanceScore
       antiWeaponsScore
       equalityScore
+
+      bankRatingConsumentenbond
+      onlineBankingRatingConsumentenbond
+      serviceRatingBankingConsumentenbond
+
+      hasApplePay
+      hasGooglePay
     }
   }
 `;

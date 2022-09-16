@@ -211,95 +211,255 @@ export function Comparison({
 
   function renderBankSwitch() {
     return (
-      <table className="min-w-full my-3">
-        <thead className="border-b">
-          <tr>
-            <th scope="col"></th>
-            {current.map((c) => (
-              <th scope="col" key={c.id}>
-                <span className="font-bold">{c.displayNameCompany}</span>
-              </th>
-            ))}
-            {alternatives.map((a) => (
-              <th scope="col" key={`th-${a.id}`}>
-                {a.displayNameCompany}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <span className="font-bold">Base pricing</span>
-            </td>
-            {current.map((c) => (
-              <td scope="col" key={c.id}>
-                €{c.costBankaccount}
-              </td>
-            ))}
-            {alternatives.map((a) => (
-              <td scope="col" key={`td-${a.id}`}>
-                €{a.costBankaccount}
-              </td>
-            ))}
-          </tr>
+      <div>
+        <div className="py-3">
+          <Title variant="h2">
+            1️⃣ Know it&apos;s probably easier than you think
+          </Title>
+          <div className="grid grid-col-1 gap-2 py-3">
+            <div>
+              👉 65% of people who consider switching don&apos;t because they
+              believe it&apos;s too much of a hassle 😩.
+            </div>
+            <div>
+              👉 75% of people who <strong>do</strong> make the switch rate the
+              process as easy or super easy 💪.
+            </div>
+            <div>👉 90% of people make the switch in under 15 minutes 🙋</div>
+            <div>
+              👉 90% of couples who have a shared bank account do it in under 20
+              minutes 🙋🙋🏼‍♀️
+            </div>
+          </div>
+        </div>
+        <div className="py-3">
+          <Title variant="h2">
+            2️⃣ make sure this alternative suits your needs.
+          </Title>
+          <p>
+            You&apos;ll probably do your own research, but here are some things that might help you decide:
+          </p>
+          <table className="min-w-full my-3">
+            <thead className="border-b">
+              <tr>
+                <th scope="col"></th>
+                {current.map((c) => (
+                  <th scope="col" key={c.id}>
+                    <span className="font-bold">{c.displayNameCompany}</span>
+                  </th>
+                ))}
+                {alternatives.map((a) => (
+                  <th scope="col" key={`th-${a.id}`}>
+                    {a.displayNameCompany}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="p-2 text-right">
+                  <span className="font-bold">Base pricing</span>
+                </td>
+                {current.map((c) => (
+                  <td scope="col" key={c.id} className="text-center">
+                    €{c.costBankaccount}
+                  </td>
+                ))}
+                {alternatives.map((a) => (
+                  <td scope="col" key={`td-${a.id}`} className="text-center">
+                    €{a.costBankaccount}
+                  </td>
+                ))}
+              </tr>
 
-          <tr>
-            <td></td>
-            {current.map((c) => (
-              <td scope="col" key={c.id}>
-                <div className="py-3">
-                  <a
-                    href={c.bankURL}
-                    onClick={() =>
-                      push([
-                        "trackEvent",
-                        "Results",
-                        "Click Current",
-                        "bank",
-                        `${c.displayNameCompany} DIRECT`,
-                      ])
-                    }
-                    target="blank"
-                  >
-                    <Button>Go to {c.displayNameCompany}</Button>
-                  </a>
-                </div>
-              </td>
-            ))}
-            {alternatives.map((a) => (
-              <td scope="col" key={`td-${a.id}`}>
-                <div className="py-3">
-                  <a
-                    href={a.bankURL}
-                    onClick={() =>
-                      push([
-                        "trackEvent",
-                        "Results",
-                        "Click Alternative",
-                        "bank",
-                        `${a.displayNameCompany} DIRECT`,
-                      ])
-                    }
-                    target="blank"
-                  >
-                    <Button>Go to {a.displayNameCompany}</Button>
-                  </a>
-                </div>
-              </td>
-            ))}
-          </tr>
+              <tr>
+                <td className="p-2 text-right">
+                  <span className="font-bold">Rating</span>
+                </td>
+                {current.map((c) => (
+                  <td scope="col" key={c.id} className="text-center">
+                    {c.bankRatingConsumentenbond}
+                  </td>
+                ))}
+                {alternatives.map((a) => (
+                  <td scope="col" key={`td-${a.id}`} className="text-center">
+                    {a.bankRatingConsumentenbond}
+                  </td>
+                ))}
+              </tr>
 
-          <tr>
-            <td></td>
-            <td colSpan={100}>
-              <span className="text-gray-400">
-                I don&apos;t receive a commission on any of these links.
-              </span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              <tr>
+                <td className="p-2 text-right">
+                  <span className="font-bold">Service rating</span>
+                </td>
+                {current.map((c) => (
+                  <td scope="col" key={c.id} className="text-center">
+                    {c.serviceRatingBankingConsumentenbond}
+                  </td>
+                ))}
+                {alternatives.map((a) => (
+                  <td scope="col" key={`td-${a.id}`} className="text-center">
+                    {a.serviceRatingBankingConsumentenbond}
+                  </td>
+                ))}
+              </tr>
+
+              <tr>
+                <td className="p-2 text-right">
+                  <span className="font-bold">Online/App banking rating</span>
+                </td>
+                {current.map((c) => (
+                  <td scope="col" key={c.id} className="text-center">
+                    {c.onlineBankingRatingConsumentenbond}
+                  </td>
+                ))}
+                {alternatives.map((a) => (
+                  <td scope="col" key={`td-${a.id}`} className="text-center">
+                    {a.onlineBankingRatingConsumentenbond}
+                  </td>
+                ))}
+              </tr>
+
+              <tr>
+                <td className="p-2 text-right">
+                  <span className="font-bold">Has Apple Pay</span>
+                </td>
+                {current.map((c) => (
+                  <td scope="col" key={c.id} className="text-center">
+                    {c.hasApplePay ? "✅" : "❌"}
+                  </td>
+                ))}
+                {alternatives.map((a) => (
+                  <td scope="col" key={`td-${a.id}`} className="text-center">
+                    {a.hasApplePay ? "✅" : "❌"}
+                  </td>
+                ))}
+              </tr>
+
+              <tr>
+                <td className="p-2 text-right">
+                  <span className="font-bold">Has Google Pay</span>
+                </td>
+                {current.map((c) => (
+                  <td scope="col" key={c.id} className="text-center">
+                    {c.hasGooglePay ? "✅" : "❌"}
+                  </td>
+                ))}
+                {alternatives.map((a) => (
+                  <td scope="col" key={`td-${a.id}`} className="text-center">
+                    {a.hasGooglePay ? "✅" : "❌"}
+                  </td>
+                ))}
+              </tr>
+
+              <tr>
+                <td></td>
+                {current.map((c) => (
+                  <td scope="col" key={c.id}>
+                    <div className="py-3 text-center">
+                      <a
+                        href={c.bankURL}
+                        onClick={() =>
+                          push([
+                            "trackEvent",
+                            "Results",
+                            "Click Current",
+                            "bank",
+                            `${c.displayNameCompany} DIRECT`,
+                          ])
+                        }
+                        target="blank"
+                      >
+                        <Button>Go to {c.displayNameCompany}</Button>
+                      </a>
+                    </div>
+                  </td>
+                ))}
+                {alternatives.map((a) => (
+                  <td scope="col" key={`td-${a.id}`}>
+                    <div className="py-3 text-center">
+                      <a
+                        href={a.bankURL}
+                        onClick={() =>
+                          push([
+                            "trackEvent",
+                            "Results",
+                            "Click Alternative",
+                            "bank",
+                            `${a.displayNameCompany} DIRECT`,
+                          ])
+                        }
+                        target="blank"
+                      >
+                        <Button>Go to {a.displayNameCompany}</Button>
+                      </a>
+                    </div>
+                  </td>
+                ))}
+              </tr>
+
+              <tr>
+                <td></td>
+                <td colSpan={100}>
+                  <span className="text-gray-400">
+                    I don&apos;t receive a commission on any of these links.
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div className="py-3">
+            <Title variant="h2">
+              3️⃣ Use the overstapservice when opening a bank account.
+            </Title>
+            <div className="grid grid-col-1 gap-2 py-3">
+              <div>
+                ✅ Overstapservice automatically forwards all monthly payments
+                to your new bank account for 13 months. After, creditors
+                automatically switch to your new bank accounts.
+              </div>
+            </div>
+          </div>
+
+          <div className="py-3">
+            <Title variant="h2">
+              4️⃣ Close your old bank account after 3 months.
+            </Title>
+            <div className="grid grid-col-1 gap-2 py-3">
+              <div>
+                💰 Many people incur extra costs because they tend to forget to
+                cancel their old bank. After 3 months, all your monthly payments
+                have definitely been switched over.
+              </div>
+            </div>
+          </div>
+
+          <div className="py-3">
+            <Title variant="h2">
+              5️⃣ Let your old bank, new bank and social network know
+            </Title>
+            <div className="grid grid-col-1 gap-2 py-3">
+              <div>
+                Whether you have 5 or 5 million followers, let the world know
+                you&apos;ve made the switch! Make sure to tag your old bank and
+                new bank and tell them why you switched.
+              </div>
+            </div>
+          </div>
+
+          <div className="py-3">
+            <Title variant="h2">6️⃣ Don&apos;t postpone</Title>
+            <div className="grid grid-col-1 gap-2 py-3">
+              <div>
+                Whether you have 5 or 5 million followers, let the world know
+                you&apos;ve made the switch! Make sure to tag your old bank and
+                new bank and tell them why you switched.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     );
   }
 
@@ -323,7 +483,7 @@ export function Comparison({
         </thead>
         <tbody>
           <tr>
-            <td>
+            <td className="p-2 text-right">
               <span className="font-bold">Base pricing</span>
             </td>
             {current.map((c) => (
