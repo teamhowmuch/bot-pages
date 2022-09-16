@@ -608,7 +608,9 @@ export function Comparison({
           <Card>
             {alternatives.length > 0 ? (
               <>
-                <Title align="center">Alternatives you might consider</Title>
+                <Title align="center">
+                  I&apos;ve calculated which alternative suits you best
+                </Title>
                 {renderAlternatives()}
               </>
             ) : (
