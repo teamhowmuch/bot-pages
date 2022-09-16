@@ -115,27 +115,8 @@ export function Comparison({
 
           <tr>
             <td></td>
-            {current.map((c) => (
-              <td scope="col" key={c.id}>
-                <div className="py-3">
-                  <a
-                    href={c.travelURL}
-                    onClick={() =>
-                      push([
-                        "trackEvent",
-                        "Results",
-                        "Click Current",
-                        "travel insurance",
-                        `${c.displayNameCompany} DIRECT`,
-                      ])
-                    }
-                    target="blank"
-                  >
-                    <Button>Go to {c.displayNameCompany}</Button>
-                  </a>
-                </div>
-              </td>
-            ))}
+            <td></td>
+
             {alternatives.map((a) => (
               <td scope="col" key={`td-${a.id}`}>
                 <div className="py-3">
@@ -355,27 +336,7 @@ export function Comparison({
 
               <tr>
                 <td></td>
-                {current.map((c) => (
-                  <td scope="col" key={c.id}>
-                    <div className="py-3 text-center">
-                      <a
-                        href={c.bankURL}
-                        onClick={() =>
-                          push([
-                            "trackEvent",
-                            "Results",
-                            "Click Current",
-                            "bank",
-                            `${c.displayNameCompany} DIRECT`,
-                          ])
-                        }
-                        target="blank"
-                      >
-                        <Button>Go to {c.displayNameCompany}</Button>
-                      </a>
-                    </div>
-                  </td>
-                ))}
+                <td></td>
                 {alternatives.map((a) => (
                   <td scope="col" key={`td-${a.id}`}>
                     <div className="py-3 text-center">
@@ -490,27 +451,7 @@ export function Comparison({
 
           <tr>
             <td></td>
-            {current.map((c) => (
-              <td scope="col" key={c.id}>
-                <div className="py-3">
-                  <a
-                    href={c.healthURL}
-                    onClick={() =>
-                      push([
-                        "trackEvent",
-                        "Results",
-                        "Click Current",
-                        "health insurance",
-                        `${c.displayNameCompany} DIRECT`,
-                      ])
-                    }
-                    target="blank"
-                  >
-                    <Button>Go to {c.displayNameCompany}</Button>
-                  </a>
-                </div>
-              </td>
-            ))}
+            <td></td>
             {alternatives.map((a) => (
               <td scope="col" key={`td-${a.id}`}>
                 <div className="py-3">
