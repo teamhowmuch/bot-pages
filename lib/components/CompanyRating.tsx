@@ -14,14 +14,14 @@ interface Props {
 }
 
 const valueLabels: Record<UserValue, string> = {
-  animal_welfare: "Animal factory farming",
-  biodiversity: "Biodiversity",
+  animal_welfare: "Animal factory farming 🐖",
+  biodiversity: "Biodiversity 🐝",
   ceo_pay: "Fair worker pay 👩‍💼👨‍🔧",
-  climate: "Climate",
+  climate: "Climate 🔥",
   fair_pay: "Fair pay",
-  gender_equality: "Gender equality",
-  tax_evasion_sucks: "Tax evasion",
-  weapons_are_ok: "Weapons",
+  gender_equality: "Gender equality 🧑‍🤝‍🧑",
+  tax_evasion_sucks: "Tax evasion 💸",
+  weapons_are_ok: "Weapons 🔫",
 };
 
 function renderClaim(
@@ -56,7 +56,7 @@ function renderClaims(
   }
 }
 
-export function CompanyClaims({ company, chatData }: Props) {
+export function CompanyRating({ company, chatData }: Props) {
   const [expanded, setExpanded] = useState(false);
   const { most_important } = chatData;
   const otherInterestingClaims = Object.entries(company)

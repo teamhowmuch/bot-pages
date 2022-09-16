@@ -5,7 +5,6 @@ import Image from "next/image";
 import { ParsedUrlQuery } from "querystring";
 import { useEffect, useState } from "react";
 import {
-  CompanyClaims,
   Company as CompanyComponent,
   Navbar,
   Button,
@@ -14,7 +13,10 @@ import {
   Card,
   FlipCard,
   SendEmail,
+  Title,
+  Comparison,
 } from "../../lib/components";
+import { NothingToSeeHere } from "../../lib/components/NothingToSeeHere";
 import { listCompanies } from "../../lib/graphql";
 import {
   ChatData,
@@ -27,7 +29,6 @@ import {
   CompanyRelation,
 } from "../../lib/models";
 import { assignRelations, rankCompanies } from "../../lib/util";
-import IdkGif from "../../public/gifs/trump_idk.gif";
 
 interface Props {
   userId: number;
@@ -37,232 +38,6 @@ interface Props {
 
 interface Params extends ParsedUrlQuery {
   id: string;
-}
-
-function renderNothingToSeeHere() {
-  return (
-    <div className="py-5 rounded">
-      <div className="py-10 text-center">
-        <h1 className="text-3xl">Nothing to see here</h1>
-        <div className="py-6 flex justify-center">
-          <Image src={IdkGif} alt="i don't know" width={480} height={233} />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function renderInsurance(
-  chatData: ChatData,
-  companies: RankedCompanyWithRelations[],
-  companyRelation: CompanyRelation,
-  alternativeRelation: CompanyRelation,
-  label: "travel" | "health"
-) {
-  const current = companies.find((c) =>
-    c.userRelations.includes(companyRelation)
-  );
-  const alternative = companies.find((c) =>
-    c.userRelations.includes(alternativeRelation)
-  );
-
-  if (!current) {
-    return renderNothingToSeeHere();
-  }
-
-  return (
-    <Card>
-      <div>
-        <h1 className="text-3xl text-center py-3">Your {label} insurance</h1>
-        <CompanyComponent
-          company={current}
-          chatData={chatData}
-          isAlternative={false}
-        />
-        {alternative ? (
-          <>
-            <h1 className="text-3xl py-3 text-center">Better fit for you</h1>
-            <CompanyComponent
-              company={alternative}
-              chatData={chatData}
-              isAlternative={true}
-            />
-            <div className="py-3">
-              <Card>
-                <>
-                  <h5 className="text-xl">
-                    {alternative.displayNameCompany} base pricing: €
-                    {label === "health"
-                      ? alternative.costHealthInsurance
-                      : alternative.costTravelInsurance}
-                    /month{" "}
-                    <small>
-                      ({current.displayNameCompany} = €
-                      {label === "health"
-                        ? current.costHealthInsurance
-                        : current.costTravelInsurance}
-                      /month)
-                    </small>
-                  </h5>
-
-                  <div className="flex gap-1">
-                    <a
-                      href={
-                        label === "health"
-                          ? alternative.healthURL
-                          : alternative.travelURL
-                      }
-                      onClick={() =>
-                        push([
-                          "trackEvent",
-                          "Results",
-                          "Click Alternative",
-                          label,
-                          `${alternative.displayNameCompany} DIRECT`,
-                        ])
-                      }
-                      target="blank"
-                    >
-                      <Button>Go to {alternative.displayNameCompany}</Button>
-                    </a>
-                    <a
-                      href={
-                        label === "health"
-                          ? "https://www.independer.nl/zorgverzekering/intro.aspx"
-                          : "https://www.independer.nl/reisverzekering/intro.aspx"
-                      }
-                      onClick={() =>
-                        push([
-                          "trackEvent",
-                          "Results",
-                          "Click Alternative",
-                          label,
-                          `${alternative.displayNameCompany} INDEPENDER`,
-                        ])
-                      }
-                      target="blank"
-                    >
-                      <Button>Compare on Independer</Button>
-                    </a>
-                    <a
-                      href={
-                        label === "health"
-                          ? "https://www.poliswijzer.nl/zorgverzekering"
-                          : "https://www.poliswijzer.nl/reisverzekering/doorlopende/vergelijken"
-                      }
-                      onClick={() =>
-                        push([
-                          "trackEvent",
-                          "Results",
-                          "Click Alternative",
-                          label,
-                          `${alternative.displayNameCompany} POLISWIJZER`,
-                        ])
-                      }
-                      target="blank"
-                    >
-                      <Button>Compare on PolisWijzer</Button>
-                    </a>
-                  </div>
-                </>
-              </Card>
-            </div>
-
-            <br />
-            <a href="https://www.grobot.nl/how" className="underline">
-              Sources
-            </a>
-          </>
-        ) : (
-          <p>It is the best, no alternative!</p>
-        )}
-      </div>
-    </Card>
-  );
-}
-
-function renderBanks(
-  chatData: ChatData,
-  companies: RankedCompanyWithRelations[]
-) {
-  const current = companies.filter((c) => c.userRelations.includes("bank"));
-  const alternative = companies.find((c) =>
-    c.userRelations.includes("bankAlternative")
-  );
-
-  if (current.length === 0) {
-    return renderNothingToSeeHere();
-  }
-
-  return (
-    <div className="py-5 rounded">
-      <div className="py-10">
-        <h1 className="text-3xl py-3">Your banks</h1>
-        {current.map((c) => (
-          <div key={c.id}>
-            <CompanyComponent
-              company={c}
-              chatData={chatData}
-              isAlternative={true}
-            />
-          </div>
-        ))}
-        {alternative ? (
-          <>
-            <h1 className="text-3xl py-3">Better fit for you</h1>
-            <div className="">
-              <h5 className="text-xl"></h5>
-              <CompanyComponent
-                company={alternative}
-                chatData={chatData}
-                isAlternative={true}
-              />
-            </div>
-            <div className="py-3">
-              <div className="p-2 bg-white">
-                <h5 className="text-xl">
-                  Base price bank account at {alternative.displayNameCompany} €
-                  {alternative.costBankaccount}/mo
-                  <small>
-                    {" "}
-                    (
-                    {current
-                      .map(
-                        (c) =>
-                          `${c.displayNameCompany}: €${c.costBankaccount}/mo`
-                      )
-                      .join(", ")}
-                    )
-                  </small>
-                </h5>
-                <a
-                  href={alternative.bankURL}
-                  target="blank"
-                  onClick={() =>
-                    push([
-                      "trackEvent",
-                      "Results",
-                      "Click Alternative",
-                      "bank",
-                      `${alternative.displayNameCompany} Direct`,
-                    ])
-                  }
-                >
-                  <Button>Go to {alternative.displayNameCompany}</Button>
-                </a>
-                <br />
-              </div>
-            </div>
-          </>
-        ) : (
-          <p>It is the best, no alternative!</p>
-        )}
-        <a href="https://www.grobot.nl/how" className="underline">
-          Sources
-        </a>
-      </div>
-    </div>
-  );
 }
 
 function renderPre() {
@@ -303,7 +78,6 @@ const ChatResults: NextPage<Props> = ({ userId, chatData, userCompanies }) => {
   // event handlers
   function onClickCompanySelection(type: CompanyType) {
     push(["trackEvent", "Results", "Click Company Type", type]);
-
     setSelectedCompanyType(type);
   }
 
@@ -311,7 +85,7 @@ const ChatResults: NextPage<Props> = ({ userId, chatData, userCompanies }) => {
   // rendering
   function renderCompanySelection() {
     return (
-      <div className="py-3 flex gap-2 justify-center">
+      <div className="p-3 flex gap-2 justify-center">
         <CompanyButton
           label="Travel insurance"
           emoji="🏝"
@@ -366,25 +140,13 @@ const ChatResults: NextPage<Props> = ({ userId, chatData, userCompanies }) => {
   }
 
   function renderSelectedCompany() {
-    if (selectedCompanyType === "health_insurance") {
-      return renderInsurance(
-        chatData,
-        userCompanies,
-        "healthInsurance",
-        "healthInsuranceAlternative",
-        "health"
-      );
-    } else if (selectedCompanyType === "travel_insurance") {
-      return renderInsurance(
-        chatData,
-        userCompanies,
-        "travelInsurance",
-        "travelInsuranceAlternative",
-        "travel"
-      );
-    } else if (selectedCompanyType === "banks") {
-      return renderBanks(chatData, userCompanies);
-    }
+    return (
+      <Comparison
+        chatData={chatData}
+        userCompanies={userCompanies}
+        selectedComparison={selectedCompanyType}
+      />
+    );
   }
 
   return (
