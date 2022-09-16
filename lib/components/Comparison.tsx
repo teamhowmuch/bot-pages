@@ -448,17 +448,6 @@ export function Comparison({
               </div>
             </div>
           </div>
-
-          <div className="py-3">
-            <Title variant="h2">6️⃣ Don&apos;t postpone</Title>
-            <div className="grid grid-col-1 gap-2 py-3">
-              <div>
-                Whether you have 5 or 5 million followers, let the world know
-                you&apos;ve made the switch! Make sure to tag your old bank and
-                new bank and tell them why you switched.
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     );
