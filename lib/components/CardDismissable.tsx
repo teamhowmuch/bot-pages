@@ -9,7 +9,7 @@ export function CardDismissable({ children, ...rest }: Props) {
   const [isDismissed, setDismissed] = useState(false);
 
   function onClickDismiss() {
-    setDismissed(false);
+    setDismissed(true);
   }
 
   if (isDismissed) {
@@ -22,7 +22,7 @@ export function CardDismissable({ children, ...rest }: Props) {
         <div className="flex-1">{children}</div>
         <div className="flex-0">
           <Button
-            onClick={onClickDismiss}
+            onClick={() => onClickDismiss()}
             iconLeft={faTimes}
             size="sm"
             mode="default"
