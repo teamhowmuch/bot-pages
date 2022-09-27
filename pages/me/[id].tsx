@@ -1,32 +1,26 @@
+import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 import { push } from "@socialgouv/matomo-next";
 import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
+import Link from "next/link";
+
 import { ParsedUrlQuery } from "querystring";
 import { useEffect, useState } from "react";
+
 import {
-  Company as CompanyComponent,
   Navbar,
-  Button,
   Container,
   CompanyButton,
-  Card,
-  FlipCard,
-  SendEmail,
-  Title,
   Comparison,
+  CardDismissable,
+  Icon,
 } from "../../lib/components";
-import { NothingToSeeHere } from "../../lib/components/NothingToSeeHere";
+
 import { listCompanies } from "../../lib/graphql";
 import {
   ChatData,
-  UserValue,
-  Company,
   RankedCompanyWithRelations,
-  RankedCompany,
-  valueMap,
   CompanyType,
-  CompanyRelation,
 } from "../../lib/models";
 import {
   assignRelations,
@@ -48,7 +42,22 @@ interface Params extends ParsedUrlQuery {
 function renderPre() {
   return (
     <div className="py-3 text-center">
-      <p>
+      <CardDismissable variant="action">
+        <a
+          href="https://www.instagram.com/grobothq/"
+          target="_blank"
+          rel="noreferrer"
+          onClick={() =>
+            push(["trackEvent", "Results", "Click Follow Instragram"])
+          }
+        >
+          <div className="flex items-center gap-2 justify-center cursor-pointer">
+            <Icon icon={faInstagram} size="2x" />
+            <span>Follow me on Instagram for regular updates</span>
+          </div>
+        </a>
+      </CardDismissable>
+      <p className="mt-3">
         I listened to what you find important and analysed 219 reports on your
         companies.
       </p>

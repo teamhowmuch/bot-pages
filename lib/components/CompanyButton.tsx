@@ -13,7 +13,7 @@ export function CompanyButton({ label, emoji, active, color, ...rest }: Props) {
     <div className="">
       <button
         className={classNames(
-          `p-2 md:p-4 rounded-md w-32 h-32 cursor-pointer transform transition duration-100 hover:scale-105`,
+          `p-2 md:p-4 rounded-md w-28 h-28 cursor-pointer transform transition duration-100 hover:scale-105`,
           {
             "bg-green-400": color === "green",
             "bg-yellow-400": color === "yellow",
