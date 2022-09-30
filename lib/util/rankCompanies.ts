@@ -43,14 +43,6 @@ export function rankCompanies(
   const maxScore = Math.max(...rankedCompanies.map((c) => c.score));
   rankedCompanies.forEach((c) => {
     c.relativeScore = Math.round((c.score / maxScore) * 100);
-    console.log(
-      "maxScore",
-      maxScore,
-      "score",
-      c.score,
-      "relativeScore",
-      c.relativeScore
-    );
   });
 
   rankedCompanies.sort((a, b) => b.score - a.score);

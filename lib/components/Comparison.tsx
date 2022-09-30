@@ -38,17 +38,17 @@ export function Comparison({
 
     return (
       <div className="">
-        {current.map((c) => (
-          <div
-            key={`c${c.id}`}
-            className="grid gap-2 grid-cols-1 md:grid-cols-3"
-          >
-            <div className="col-span-1">
-              <Company company={c} />
+        {current.map((c, i) => (
+          <div key={`c${c.id}`}>
+            <div className="grid gap-2 grid-cols-1 md:grid-cols-3">
+              <div className="col-span-1">
+                <Company company={c} />
+              </div>
+              <div className="col-span-2">
+                <CompanyRating company={c} chatData={chatData} />
+              </div>
             </div>
-            <div className="col-span-2">
-              <CompanyRating company={c} chatData={chatData} />
-            </div>
+            {i < alternatives.length - 1 && <hr className="my-6" />}
           </div>
         ))}
       </div>

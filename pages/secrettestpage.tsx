@@ -3,7 +3,7 @@ import Head from "next/head";
 import Image from "next/image";
 import Router from "next/router";
 import { useEffect, useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { createChat } from "../lib/api/createChat";
 import { login } from "../lib/api/login";
 import {
@@ -23,7 +23,7 @@ type Inputs = {
 
   travel_insurance: string;
   health_insurance: string;
-  banks: string;
+  banks: string[];
 
   biodiversity: number;
   climate: number;
@@ -40,6 +40,7 @@ const SecretTestPage: NextPage = () => {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<Inputs>();
 
@@ -59,7 +60,7 @@ const SecretTestPage: NextPage = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const res = await createChat({
-      bot_version: "4.0.0",
+      bot_version: "6.0.0",
 
       chat_id: "123",
       email: "daanaerts@gmail.com",
@@ -68,7 +69,7 @@ const SecretTestPage: NextPage = () => {
       companies: {
         travel_insurance: data.travel_insurance,
         health_insurance: data.health_insurance,
-        banks: [data.banks],
+        banks: data.banks,
       },
       values: {
         biodiversity: data.biodiversity,
@@ -132,130 +133,163 @@ const SecretTestPage: NextPage = () => {
         </form>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          <h1>Companies</h1>
-          <div>
-            <label>Travel insurance</label>
-            <select {...register("travel_insurance")}>
-              {travelSorted.map((i) => (
-                <option key={i} value={i}>
-                  {i}
-                </option>
+          <div className="my-3">
+            <h1>Companies</h1>
+            <div>
+              <h6>Travel insurance</h6>
+              <select {...register("travel_insurance")} className="p-3">
+                {travelSorted.map((i) => (
+                  <option key={i} value={i}>
+                    {i}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <h6>Health insurance</h6>
+              <select {...register("health_insurance")} className="p-3">
+                {healthSorted.map((i) => (
+                  <option key={i} value={i}>
+                    {i}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <h6>Banks</h6>
+              {banks.map((bank) => (
+                <div key={bank} className="px-1">
+                  <input
+                    type="checkbox"
+                    {...register("banks")}
+                    key={bank}
+                    value={bank}
+                  />
+                  {bank}
+                </div>
               ))}
-            </select>
+            </div>
           </div>
 
-          <div>
-            <label>Health insurance</label>
-            <select {...register("health_insurance")}>
-              {healthSorted.map((i) => (
-                <option key={i} value={i}>
-                  {i}
-                </option>
-              ))}
-            </select>
-          </div>
+          <h1 className="text-xl">Values</h1>
 
-          <div>
-            <label>Banks</label>
-            <select {...register("banks")}>
-              {banks.map((i) => (
-                <option key={i} value={i}>
-                  {i}
-                </option>
-              ))}
-            </select>
-          </div>
+          <table>
+            <tbody>
+              <tr>
+                <td>Q1 Oil and Gas</td>
+                <td>
+                  <input
+                    type="number"
+                    className="p-2"
+                    defaultValue={3}
+                    {...register("climate")}
+                    min={1}
+                    max={5}
+                  />
+                </td>
+              </tr>
 
-          <h1>Values</h1>
-          <div>
-            <label>Q1 Oil and Gas</label>
-            <input
-              type="number"
-              defaultValue={3}
-              {...register("climate")}
-              min={1}
-              max={5}
-            />
-          </div>
+              <tr>
+                <td>Q2 CEO pay</td>
+                <td>
+                  <input
+                    type="number"
+                    className="p-2"
+                    defaultValue={3}
+                    {...register("fair_pay")}
+                    min={1}
+                    max={5}
+                  />
+                </td>
+              </tr>
 
-          <div>
-            <label>Q2 CEO pay</label>
-            <input
-              type="number"
-              defaultValue={3}
-              {...register("fair_pay")}
-              min={1}
-              max={5}
-            />
-          </div>
+              <tr>
+                <td>Q3 Industrial Animal farming</td>
+                <td>
+                  <input
+                    type="number"
+                    className="p-2"
+                    defaultValue={3}
+                    {...register("animal_welfare")}
+                    min={1}
+                    max={5}
+                  />
+                </td>
+              </tr>
 
-          <div>
-            <label>Q3 Industrial Animal farming</label>
-            <input
-              type="number"
-              defaultValue={3}
-              {...register("animal_welfare")}
-              min={1}
-              max={5}
-            />
-          </div>
+              <tr>
+                <td>Q4 Tax evasion</td>
+                <td>
+                  <input
+                    type="number"
+                    className="p-2"
+                    defaultValue={3}
+                    {...register("tax_evasion_sucks")}
+                    min={1}
+                    max={5}
+                  />
+                </td>
+              </tr>
 
-          <div>
-            <label>Q4 Tax evasion</label>
-            <input
-              type="number"
-              defaultValue={3}
-              {...register("tax_evasion_sucks")}
-              min={1}
-              max={5}
-            />
-          </div>
+              <tr>
+                <td>Q5 Weapons</td>
+                <td>
+                  <input
+                    type="number"
+                    className="p-2"
+                    defaultValue={3}
+                    {...register("weapons_are_ok")}
+                    min={1}
+                    max={5}
+                  />
+                </td>
+              </tr>
 
-          <div>
-            <label>Q5 Weapons</label>
-            <input
-              type="number"
-              defaultValue={3}
-              {...register("weapons_are_ok")}
-              min={1}
-              max={5}
-            />
-          </div>
+              <tr>
+                <td>Q6 Gender equality</td>
+                <td>
+                  <input
+                    type="number"
+                    className="p-2"
+                    defaultValue={3}
+                    {...register("gender_equality")}
+                    min={1}
+                    max={5}
+                  />
+                </td>
+              </tr>
 
-          <div>
-            <label>Q6 Gender equality</label>
-            <input
-              type="number"
-              defaultValue={3}
-              {...register("gender_equality")}
-              min={1}
-              max={5}
-            />
-          </div>
+              <tr>
+                <td>Q7 Biodiversity</td>
+                <td>
+                  <input
+                    type="number"
+                    className="p-2"
+                    defaultValue={3}
+                    {...register("biodiversity")}
+                    min={1}
+                    max={5}
+                  />
+                </td>
+              </tr>
 
-          <div>
-            <label>Q7 Biodiversity</label>
-            <input
-              type="number"
-              defaultValue={3}
-              {...register("biodiversity")}
-              min={1}
-              max={5}
-            />
-          </div>
-
-          <div>
-            <label>Most important</label>
-            <select {...register("most_important")}>
-              {USER_VALUES.map((i) => (
-                <option key={i} value={i}>
-                  {i}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <input type="submit" />
+              <tr>
+                <td>Most important</td>
+                <td>
+                  <select {...register("most_important")} className="p-2">
+                    {USER_VALUES.map((i) => (
+                      <option key={i} value={i}>
+                        {i}
+                      </option>
+                    ))}
+                  </select>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <input type="submit" className="bg-blue-400 p-3 text-white rounded" />
         </form>
       </main>
     </div>

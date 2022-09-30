@@ -52,9 +52,15 @@ export function getUserCompanies(
 
   const banks = companies.filter((company) => {
     const companyName = company.displayNameCompany;
-    return chatData.companies.banks
-      .map((n) => n.toLowerCase())
-      .includes(companyName.toLowerCase());
+
+    return (
+      company.sellsBankaccount &&
+      chatData.companies.banks
+        .map((n) => {
+          return n.toLowerCase();
+        })
+        .includes(companyName.toLowerCase())
+    );
   });
 
   const maxBankScore = Math.max(...banks.map((bank) => bank.score));
