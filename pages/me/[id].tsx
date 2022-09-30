@@ -123,7 +123,7 @@ const ChatResults: NextPage<Props> = ({ userId, chatData, userCompanies }) => {
   // rendering
   function renderCompanySelection() {
     return (
-      <div className="p-3 flex gap-2 justify-center">
+      <div className="p-3 flex gap-2 justify-center mb-12">
         <CompanyButton
           label="Travel insurance"
           emoji="🏝"

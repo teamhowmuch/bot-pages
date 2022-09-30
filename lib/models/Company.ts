@@ -59,6 +59,7 @@ export type CompanyRelation =
 export interface RankedCompany extends Company {
   score: number;
   rank: number;
+  relativeScore: number;
 }
 
 export interface RankedCompanyWithRelations extends RankedCompany {

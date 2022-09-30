@@ -29,7 +29,7 @@ export function CompanyButton({ label, emoji, active, color, ...rest }: Props) {
         </div>
       </button>
       <div
-        className={`m-auto rounded w-1/2 h-1 mt-2  ${
+        className={`m-auto rounded w-1/4 h-1 mt-3  ${
           active ? "bg-slate-300" : ""
         }`}
       ></div>

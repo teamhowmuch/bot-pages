@@ -27,9 +27,9 @@ type Props = {
 };
 
 const sectionTitles: Record<CompanyType, string> = {
-  health_insurance: "Your health insurance",
-  travel_insurance: "Your travel insurance",
-  banks: "Your bank",
+  health_insurance: "current health insurance",
+  travel_insurance: "current travel insurance",
+  banks: "current banks",
 };
 
 export function Comparison({
@@ -46,11 +46,18 @@ export function Comparison({
   // rendering
   function renderCurrent() {
     return (
-      <div className="grid gap-2 grid-col-1 md:grid-cols-2 ">
+      <div className="">
         {current.map((c) => (
-          <div key={`c${c.id}`}>
-            <Company company={c} />
-            <CompanyRating company={c} chatData={chatData} />
+          <div
+            key={`c${c.id}`}
+            className="grid gap-2 grid-cols-1 md:grid-cols-3"
+          >
+            <div className="col-span-1">
+              <Company company={c} />
+            </div>
+            <div className="col-span-2">
+              <CompanyRating company={c} chatData={chatData} />
+            </div>
           </div>
         ))}
       </div>
@@ -59,11 +66,18 @@ export function Comparison({
 
   function renderAlternatives() {
     return (
-      <div className="grid gap-2 grid-cols-1 md:grid-cols-2">
+      <div className="">
         {alternatives.map((a) => (
-          <div key={`a${a.id}`}>
-            <Company company={a} />
-            <CompanyRating company={a} chatData={chatData} />
+          <div
+            key={`a${a.id}`}
+            className="grid gap-2 grid-cols-1 md:grid-cols-3"
+          >
+            <div className="col-span-1">
+              <Company company={a} />
+            </div>
+            <div className="col-span-2">
+              <CompanyRating company={a} chatData={chatData} />
+            </div>
           </div>
         ))}
       </div>
@@ -521,18 +535,20 @@ export function Comparison({
   function renderMain() {
     return (
       <div>
-        <div className="grid grid-cols-1 gap-2">
+        <div className="grid grid-cols-1 gap-6">
           <Card>
-            <Title align="center">{sectionTitles[selectedComparison]}</Title>
+            <h3 className="uppercase text-center mb-3 text-gray-400">
+              {sectionTitles[selectedComparison]}
+            </h3>
             {renderCurrent()}
           </Card>
 
           <Card>
             {alternatives.length > 0 ? (
               <>
-                <Title align="center">
-                  I&apos;ve calculated which alternative suits you best
-                </Title>
+                <h3 className="uppercase text-center mb-3 text-gray-400">
+                  Alternatives
+                </h3>
                 {renderAlternatives()}
               </>
             ) : (

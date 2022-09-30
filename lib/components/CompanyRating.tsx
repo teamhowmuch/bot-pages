@@ -6,7 +6,9 @@ import {
   RankedCompanyWithRelations,
   COMPANY_CLAIM_FIELDS,
   UserValue,
+  Company,
 } from "../models";
+import { Card, CardVariant } from "./Card";
 
 interface Props {
   company: RankedCompanyWithRelations;
@@ -14,14 +16,45 @@ interface Props {
 }
 
 const valueLabels: Record<UserValue, string> = {
-  animal_welfare: "Animal factory farming 🐖",
-  biodiversity: "Biodiversity 🐝",
-  ceo_pay: "Fair worker pay 👩‍💼👨‍🔧",
-  climate: "Climate 🔥",
+  animal_welfare: "Stop animal factory farming",
+  biodiversity: "Protecting biodiversity",
+  ceo_pay: "Fair worker pay",
+  climate: "Reducing fossil fuels",
   fair_pay: "Fair pay",
-  gender_equality: "Gender equality 🧑‍🤝‍🧑",
-  tax_evasion_sucks: "Tax evasion 💸",
-  weapons_are_ok: "Weapons 🔫",
+  gender_equality: "Promote gender equality",
+  tax_evasion_sucks: "Stop tax evasion",
+  weapons_are_ok: "Don't invest in weapons",
+};
+
+const valueToEmoji: Record<UserValue, string> = {
+  animal_welfare: "🐖",
+  biodiversity: "🐝",
+  ceo_pay: "👨‍🔧",
+  climate: "🔥",
+  fair_pay: "💸",
+  gender_equality: "🧑‍🤝‍🧑",
+  tax_evasion_sucks: "💸",
+  weapons_are_ok: "🔫",
+};
+
+const valueToScore: Record<
+  UserValue,
+  | "animalScore"
+  | "climateScore"
+  | "antiWeaponsScore"
+  | "natureScore"
+  | "antiTaxAvoidanceScore"
+  | "equalityScore"
+  | "fairPayScore"
+> = {
+  animal_welfare: "animalScore",
+  biodiversity: "natureScore",
+  ceo_pay: "fairPayScore",
+  climate: "climateScore",
+  fair_pay: "fairPayScore",
+  gender_equality: "equalityScore",
+  tax_evasion_sucks: "antiTaxAvoidanceScore",
+  weapons_are_ok: "antiWeaponsScore",
 };
 
 function renderClaim(
@@ -29,74 +62,64 @@ function renderClaim(
   importance: number,
   company: RankedCompanyWithRelations
 ) {
-  return (
-    <div>
-      <h6 className="font-bold">{valueLabels[value]}</h6>
-      <p>{company[claimsMap[value]]}</p>
-    </div>
-  );
-}
+  const valueScore = company[valueToScore[value]];
+  let scoreColor: string = "bg-red-500 text-white";
+  if (valueScore > 25) scoreColor = "bg-orange-500 text-white";
+  if (valueScore > 40) scoreColor = "bg-yellow-500 text-white";
+  if (valueScore > 65) scoreColor = "bg-green-400 text-white ";
+  if (valueScore > 80) scoreColor = "bg-green-500 text-white";
 
-function renderClaims(
-  expanded: boolean,
-  company: RankedCompanyWithRelations,
-  chatData: ChatData
-) {
-  const { most_important, values } = chatData;
-  if (expanded) {
-    return Object.entries(values).map(([valueName, value]) => {
-      return renderClaim(
-        valueName as UserValue,
-        valueName === most_important ? 6 : value,
-        company
-      );
-    });
-  } else {
-    return [renderClaim(most_important, 6, company)];
-  }
+  return (
+    <Card variant={"gray"} className="h-full">
+      {importance === 6 && (
+        <p className="text-center text-sm text-gray-500 uppercase">
+          most important to you
+        </p>
+      )}
+      <h6 className="text-6xl text-center my-6">{valueToEmoji[value]}</h6>
+      <h6 className="font-bold text-center my-3">{valueLabels[value]}</h6>
+
+      <div className="flex justify-center">
+        <div className={`text-center w-20 p-2 rounded-xl ${scoreColor}`}>
+          <h6 className="uppercase text-xs">score</h6>
+          <h6 className="text-4xl">{Math.round(valueScore / 10)}</h6>
+        </div>
+      </div>
+
+      {/* <h6 className="font-bold">Rating: {Math.round(valueScore / 10)}/10</h6> */}
+      <h6 className="font-bold mt-3">Why</h6>
+      <p className="text-xs">{company[claimsMap[value]]}</p>
+      {/* <p>{company[valueToScore[value]]}</p>
+      <p>{importance}</p>
+      <p>{importance}</p> */}
+    </Card>
+  );
 }
 
 export function CompanyRating({ company, chatData }: Props) {
-  const [expanded, setExpanded] = useState(false);
-  const { most_important } = chatData;
-  const otherInterestingClaims = Object.entries(company)
-    // @ts-ignore
-    .filter(([key, value]) => COMPANY_CLAIM_FIELDS.includes(key))
-    .map(([key, value]) => value);
+  // -----
+  // rendering
+  function renderClaims() {
+    const { values, most_important } = chatData;
 
-  const claims = useMemo(
-    () => renderClaims(expanded, company, chatData),
-    [expanded, company, chatData]
-  );
+    return (
+      <div>
+        {renderClaim(most_important, 6, company)}
+        <div className="overflow-x-scroll flex gap-2 mt-3">
+          {Object.entries(values)
+            .sort((a, b) => b[1] - a[1])
+            .filter(([valueName]) => valueName !== most_important)
+            .map(([valueName, value]) => (
+              <div key={valueName} style={{ minWidth: 250 }}>
+                {renderClaim(valueName as UserValue, value, company)}
+              </div>
+            ))}
+        </div>
+      </div>
+    );
 
-  return (
-    <>
-      <h6 className="text-lg">You strongly value</h6>
-      <ul>
-        {claims.map((c, i) => (
-          <li key={i}>{c}</li>
-        ))}
-        <li>
-          <a
-            style={{
-              textDecoration: "underline",
-              color: "blue",
-              cursor: "pointer",
-            }}
-            onClick={() => {
-              push([
-                "trackEvent",
-                "Results",
-                "Click More Information",
-                `${company.displayNameCompany} Direct`,
-              ]);
-              setExpanded(!expanded);
-            }}
-          >
-            {expanded ? "Too much info" : "More informations plz"}
-          </a>
-        </li>
-      </ul>
-    </>
-  );
+    return;
+  }
+
+  return <div className="">{renderClaims()}</div>;
 }
