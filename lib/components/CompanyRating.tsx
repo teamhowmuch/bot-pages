@@ -1,17 +1,8 @@
-import { push } from "@socialgouv/matomo-next";
-import { useMemo, useState } from "react";
-import {
-  ChatData,
-  claimsMap,
-  RankedCompanyWithRelations,
-  COMPANY_CLAIM_FIELDS,
-  UserValue,
-  Company,
-} from "../models";
+import { ChatData, claimsMap, RankedCompany, UserValue } from "../models";
 import { Card, CardVariant } from "./Card";
 
 interface Props {
-  company: RankedCompanyWithRelations;
+  company: RankedCompany;
   chatData: ChatData;
 }
 
@@ -60,7 +51,7 @@ const valueToScore: Record<
 function renderClaim(
   value: UserValue,
   importance: number,
-  company: RankedCompanyWithRelations
+  company: RankedCompany
 ) {
   const valueScore = company[valueToScore[value]];
   let scoreColor: string = "bg-red-500 text-white";

@@ -19,20 +19,16 @@ import {
 import { listCompanies } from "../../lib/graphql";
 import {
   ChatData,
-  RankedCompanyWithRelations,
   CompanyType,
+  RankedCompany,
+  UserCompanies,
 } from "../../lib/models";
-import {
-  assignRelations,
-  filterAlternative,
-  filterCurrent,
-  rankCompanies,
-} from "../../lib/util";
+import { getUserCompanies, rankCompanies } from "../../lib/util";
 
 interface Props {
   userId: number;
   chatData: ChatData;
-  userCompanies: RankedCompanyWithRelations[];
+  userCompanies: UserCompanies;
 }
 
 interface Params extends ParsedUrlQuery {
@@ -65,35 +61,41 @@ function renderPre() {
   );
 }
 
+const colorScale = {
+  0: "bg-gray-400",
+  1: "bg-red-400",
+  2: "bg-orange-400",
+  3: "bg-yellow-400",
+  4: "bg-green-400",
+  5: "bg-green-600",
+} as const;
+
 function calculateFitColor(
-  userCompanies: RankedCompanyWithRelations[],
-  companyType: CompanyType
-): "green" | "yellow" | "red" | "gray" {
-  const current = userCompanies.filter(filterCurrent(companyType));
-  const alternatives = userCompanies.filter(filterAlternative(companyType));
-
-  if (current.length === 0) {
-    return "gray";
+  companies?: RankedCompany[] | RankedCompany
+): string {
+  if (!companies) {
+    return colorScale[0];
   }
-
-  const bestAlternative = Math.max(...alternatives.map((c) => c.score));
-  const worstCurrent = Math.min(...current.map((c) => c.score));
-  const differenceRatio = (bestAlternative - worstCurrent) / worstCurrent;
-
-  if (differenceRatio >= 1) {
-    return "red";
-  } else if (differenceRatio < 1 && differenceRatio >= 0) {
-    return "yellow";
+  if (Array.isArray(companies)) {
+    if (companies.length === 0) {
+      return colorScale[0];
+    } else {
+      return colorScale[
+        Math.min(
+          ...companies.map((c) => c.scoreOutOfFive)
+        ) as keyof typeof colorScale
+      ];
+    }
   } else {
-    return "green";
+    return colorScale[companies.scoreOutOfFive];
   }
 }
 
 const ChatResults: NextPage<Props> = ({ userId, chatData, userCompanies }) => {
   const [selectedCompanyType, setSelectedCompanyType] =
-    useState<CompanyType>("health_insurance");
+    useState<keyof UserCompanies>("healthInsurance");
 
-  const { bot_version, email } = chatData;
+  const { bot_version } = chatData;
 
   useEffect(() => {
     push(["enableLinkTracking"]);
@@ -127,23 +129,23 @@ const ChatResults: NextPage<Props> = ({ userId, chatData, userCompanies }) => {
         <CompanyButton
           label="Travel insurance"
           emoji="🏝"
-          active={selectedCompanyType === "travel_insurance"}
-          color={calculateFitColor(userCompanies, "travel_insurance")}
-          onClick={() => onClickCompanySelection("travel_insurance")}
+          active={selectedCompanyType === "travelInsurance"}
+          className={calculateFitColor(userCompanies.travelInsurance.current)}
+          onClick={() => onClickCompanySelection("travelInsurance")}
         />
 
         <CompanyButton
           label="Health insurance"
           emoji="🏥"
-          active={selectedCompanyType === "health_insurance"}
-          color={calculateFitColor(userCompanies, "health_insurance")}
-          onClick={() => onClickCompanySelection("health_insurance")}
+          active={selectedCompanyType === "healthInsurance"}
+          className={calculateFitColor(userCompanies.healthInsurance.current)}
+          onClick={() => onClickCompanySelection("healthInsurance")}
         />
         <CompanyButton
           label="Banks"
           emoji="🏦"
           active={selectedCompanyType === "banks"}
-          color={calculateFitColor(userCompanies, "banks")}
+          className={calculateFitColor(userCompanies.banks.current)}
           onClick={() => onClickCompanySelection("banks")}
         />
       </div>
@@ -153,9 +155,9 @@ const ChatResults: NextPage<Props> = ({ userId, chatData, userCompanies }) => {
   function renderSelectedCompany() {
     return (
       <Comparison
-        chatData={chatData}
         userCompanies={userCompanies}
         selectedComparison={selectedCompanyType}
+        chatData={chatData}
       />
     );
   }
@@ -195,11 +197,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
 
   const allCompanies = await listCompanies();
   const rankedCompanies = rankCompanies(allCompanies, chatData);
-  const withUserRelations = assignRelations(rankedCompanies, chatData);
-
-  const userCompanies = withUserRelations.filter(
-    (c) => c.userRelations.length > 0
-  );
+  const userCompanies = getUserCompanies(rankedCompanies, chatData);
 
   return {
     props: {

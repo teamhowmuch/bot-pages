@@ -1,25 +1,12 @@
 import Image from "next/image";
-import { RankedCompanyWithRelations } from "../models";
-import { CircularProgressbar } from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css";
+import { RankedCompany } from "../models";
 import classNames from "classnames";
 
 type Props = {
-  company: RankedCompanyWithRelations;
+  company: RankedCompany;
 };
 
 export function Company({ company }: Props) {
-  const ratingFive =
-    company.relativeScore < 30
-      ? 1
-      : company.relativeScore < 45
-      ? 2
-      : company.relativeScore < 60
-      ? 3
-      : company.relativeScore < 80
-      ? 4
-      : 5;
-
   return (
     <div className="text-center py-6">
       <div style={{ width: 180 }} className="mx-auto">
@@ -39,21 +26,21 @@ export function Company({ company }: Props) {
       >
         <div
           className={classNames("h-full", {
-            "bg-red-400": ratingFive === 1,
-            "bg-orange-400": ratingFive === 2,
-            "bg-yellow-400": ratingFive === 3,
-            "bg-green-400": ratingFive === 4,
-            "bg-green-600": ratingFive === 5,
+            "bg-red-400": company.scoreOutOfFive === 1,
+            "bg-orange-400": company.scoreOutOfFive === 2,
+            "bg-yellow-400": company.scoreOutOfFive === 3,
+            "bg-green-400": company.scoreOutOfFive === 4,
+            "bg-green-600": company.scoreOutOfFive === 5,
           })}
           style={{ width: `${company.relativeScore}%` }}
         />
       </div>
       <h3 className="text-8xl">
-        {ratingFive === 1 && "🧟‍♀️"}
-        {ratingFive === 2 && "🤦‍♂️"}
-        {ratingFive === 3 && "🤷‍♂️"}
-        {ratingFive === 4 && "💆‍♂️"}
-        {ratingFive === 5 && "🤴"}
+        {company.scoreOutOfFive === 1 && "🧟‍♀️"}
+        {company.scoreOutOfFive === 2 && "🤦‍♂️"}
+        {company.scoreOutOfFive === 3 && "🤷‍♂️"}
+        {company.scoreOutOfFive === 4 && "💆‍♂️"}
+        {company.scoreOutOfFive === 5 && "🤴"}
       </h3>
     </div>
   );

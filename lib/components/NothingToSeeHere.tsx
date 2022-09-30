@@ -5,7 +5,7 @@ export function NothingToSeeHere() {
   return (
     <div className="py-5 rounded">
       <div className="py-10 text-center">
-        <h1 className="text-3xl">Nothing to see here</h1>
+        <h1 className="text-3xl">You don&apos;t seem to have any</h1>
         <div className="py-6 flex justify-center">
           <Image src={IdkGif} alt="i don't know" width={480} height={233} />
         </div>

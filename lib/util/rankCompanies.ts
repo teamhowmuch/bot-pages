@@ -2,6 +2,7 @@ import {
   ChatData,
   Company,
   RankedCompany,
+  ScoreOutOfFive,
   UserValue,
   valueMap,
 } from "../models";
@@ -18,16 +19,12 @@ export function rankCompanies(
   companies: Company[],
   data: ChatData
 ): RankedCompany[] {
-  const totalPointsAllocated = Object.values(data.values).reduce(
-    (acc, cur) => acc + Number(cur),
-    0
-  );
-
   const rankedCompanies: RankedCompany[] = companies.map((c) => ({
     ...c,
     score: 0,
     rank: 0,
     relativeScore: 0,
+    scoreOutOfFive: 1,
   }));
 
   for (const company of rankedCompanies) {
@@ -45,7 +42,7 @@ export function rankCompanies(
 
   const maxScore = Math.max(...rankedCompanies.map((c) => c.score));
   rankedCompanies.forEach((c) => {
-    c.relativeScore = Math.round(c.score / maxScore * 100);
+    c.relativeScore = Math.round((c.score / maxScore) * 100);
     console.log(
       "maxScore",
       maxScore,
@@ -57,7 +54,25 @@ export function rankCompanies(
   });
 
   rankedCompanies.sort((a, b) => b.score - a.score);
-  const ranked = rankedCompanies.map((c, i) => ({ ...c, rank: i }));
+  const ranked = rankedCompanies
+    .map((c, i) => ({ ...c, rank: i }))
+    .map((c) => {
+      const scoreOutOfFive: ScoreOutOfFive =
+        c.relativeScore < 30
+          ? 1
+          : c.relativeScore < 45
+          ? 2
+          : c.relativeScore < 60
+          ? 3
+          : c.relativeScore < 80
+          ? 4
+          : 5;
+
+      return {
+        ...c,
+        scoreOutOfFive,
+      };
+    });
 
   return ranked;
 }

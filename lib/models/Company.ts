@@ -47,25 +47,20 @@ export type Company = {
   hasGooglePay?: boolean;
 };
 
-export type CompanyRelation =
-  | "travelInsurance"
-  | "healthInsurance"
-  | "bank"
-  | "superBadAlternative"
-  | "travelInsuranceAlternative"
-  | "healthInsuranceAlternative"
-  | "bankAlternative";
+export type ScoreOutOfFive = 1 | 2 | 3 | 4 | 5;
 
 export interface RankedCompany extends Company {
   score: number;
   rank: number;
   relativeScore: number;
+  scoreOutOfFive: 1 | 2 | 3 | 4 | 5;
 }
 
-export interface RankedCompanyWithRelations extends RankedCompany {
-  userRelations: CompanyRelation[];
-  hasAlternative: boolean;
-}
+export type CompanyType = "healthInsurance" | "travelInsurance" | "banks";
+export type UserCompanies = Record<
+  CompanyType,
+  { current: RankedCompany[]; alternatives: RankedCompany[] }
+>;
 
 export type CompanyScores = Pick<
   Company,

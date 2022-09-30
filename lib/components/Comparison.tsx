@@ -1,11 +1,6 @@
 import { push } from "@socialgouv/matomo-next";
 import Image from "next/image";
-import {
-  ChatData,
-  CompanyRelation,
-  CompanyType,
-  RankedCompanyWithRelations,
-} from "../models";
+import { ChatData, CompanyType, RankedCompany, UserCompanies } from "../models";
 import { Button } from "./Button";
 import { Card } from "./Card";
 import { Company } from "./Company";
@@ -13,38 +8,34 @@ import { CompanyRating } from "./CompanyRating";
 import { NothingToSeeHere } from "./NothingToSeeHere";
 import { Title } from "./Title";
 import YesGif from "../../public/gifs/yes.gif";
-import {
-  alternativeRelationMap,
-  currentRelationMap,
-  filterAlternative,
-  filterCurrent,
-} from "../util";
 
 type Props = {
+  userCompanies: UserCompanies;
   selectedComparison: CompanyType;
   chatData: ChatData;
-  userCompanies: RankedCompanyWithRelations[];
 };
 
 const sectionTitles: Record<CompanyType, string> = {
-  health_insurance: "current health insurance",
-  travel_insurance: "current travel insurance",
+  healthInsurance: "current health insurance",
+  travelInsurance: "current travel insurance",
   banks: "current banks",
 };
 
 export function Comparison({
-  selectedComparison,
   userCompanies,
+  selectedComparison,
   chatData,
 }: Props) {
-  const current = userCompanies.filter(filterCurrent(selectedComparison));
-  const alternatives = userCompanies.filter(
-    filterAlternative(selectedComparison)
-  );
+  const current = userCompanies[selectedComparison].current;
+  const alternatives = userCompanies[selectedComparison].alternatives;
 
   // ------
   // rendering
   function renderCurrent() {
+    if (current.length === 0) {
+      return <NothingToSeeHere />;
+    }
+
     return (
       <div className="">
         {current.map((c) => (
@@ -66,18 +57,18 @@ export function Comparison({
 
   function renderAlternatives() {
     return (
-      <div className="">
-        {alternatives.map((a) => (
-          <div
-            key={`a${a.id}`}
-            className="grid gap-2 grid-cols-1 md:grid-cols-3"
-          >
-            <div className="col-span-1">
-              <Company company={a} />
+      <div className="grid">
+        {alternatives.map((a, i) => (
+          <div key={`a${a.id}`}>
+            <div className="grid gap-2 grid-cols-1 md:grid-cols-3">
+              <div className="col-span-1">
+                <Company company={a} />
+              </div>
+              <div className="col-span-2">
+                <CompanyRating company={a} chatData={chatData} />
+              </div>
             </div>
-            <div className="col-span-2">
-              <CompanyRating company={a} chatData={chatData} />
-            </div>
+            {i < alternatives.length - 1 && <hr className="my-6" />}
           </div>
         ))}
       </div>
@@ -547,7 +538,7 @@ export function Comparison({
             {alternatives.length > 0 ? (
               <>
                 <h3 className="uppercase text-center mb-3 text-gray-400">
-                  Alternatives
+                  Suggested alternatives
                 </h3>
                 {renderAlternatives()}
               </>
@@ -562,10 +553,8 @@ export function Comparison({
           {alternatives.length > 0 && (
             <Card>
               <Title align="center">How to Switch</Title>
-              {selectedComparison === "health_insurance" &&
-                renderHealthSwitch()}
-              {selectedComparison === "travel_insurance" &&
-                renderTravelSwitch()}
+              {selectedComparison === "healthInsurance" && renderHealthSwitch()}
+              {selectedComparison === "travelInsurance" && renderTravelSwitch()}
               {selectedComparison === "banks" && renderBankSwitch()}
             </Card>
           )}
@@ -580,9 +569,5 @@ export function Comparison({
     );
   }
 
-  if (current.length === 0) {
-    return <NothingToSeeHere />;
-  } else {
-    return renderMain();
-  }
+  return renderMain();
 }

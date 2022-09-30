@@ -1,3 +1,3 @@
 // @index: export * from ${relpath}
-export * from "./assignUserRelations"
+export * from "./getUserCompanies"
 export * from "./rankCompanies"
