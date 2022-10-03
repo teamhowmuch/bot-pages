@@ -99,7 +99,7 @@ export function Comparison({
               <span className="font-bold">Base pricing</span>
             </td>
             {current.map((c) => (
-              <td scope="col" key={c.id} className="text-center">
+              <td scope="col" key={c.id} className="text-center font-bold">
                 €{c.costTravelInsurance}
               </td>
             ))}
@@ -112,11 +112,13 @@ export function Comparison({
 
           <tr>
             <td></td>
-            <td></td>
+            {current.map((c) => (
+              <td key={c.id} />
+            ))}
 
             {alternatives.map((a) => (
               <td scope="col" key={`td-${a.id}`} className="text-center">
-                <div className="py-3">
+                <div className="inline-block py-3">
                   <a
                     href={a.travelURL}
                     onClick={() =>
@@ -333,10 +335,12 @@ export function Comparison({
 
               <tr>
                 <td></td>
-                <td></td>
+                {current.map((e) => (
+                  <td key={e.id} />
+                ))}
                 {alternatives.map((a) => (
-                  <td scope="col" key={`td-${a.id}`}>
-                    <div className="py-3 text-center">
+                  <td scope="col" key={`td-${a.id}`} className="text-center">
+                    <div className="py-3 text-center inline-block">
                       <a
                         href={a.bankURL}
                         onClick={() =>
@@ -440,7 +444,11 @@ export function Comparison({
               </td>
             ))}
             {alternatives.map((a) => (
-              <td scope="col" key={`td-${a.id}`} className="text-center">
+              <td
+                scope="col"
+                key={`td-${a.id}`}
+                className="text-center bg-gray-100"
+              >
                 €{a.costHealthInsurance}
               </td>
             ))}
@@ -451,7 +459,7 @@ export function Comparison({
             <td></td>
             {alternatives.map((a) => (
               <td scope="col" key={`td-${a.id}`} className="text-center">
-                <div className="py-3">
+                <div className="inline-block py-3">
                   <a
                     href={a.travelURL}
                     onClick={() =>
