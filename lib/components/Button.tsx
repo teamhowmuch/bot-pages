@@ -43,7 +43,7 @@ export function Button({
       : null,
 
     mode === "default" && variant === "action"
-      ? "bg-transparent text-black"
+      ? "bg-transparent text-blue-500"
       : null,
     mode === "default" && variant === "neutral"
       ? "bg-transparent text-black"

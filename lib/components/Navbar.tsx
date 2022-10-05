@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./Button";
 import avatar from "../../public/images/avatar.png";
+import { faComment, faUser } from "@fortawesome/free-solid-svg-icons";
 
 type Props = {};
 
@@ -17,14 +18,31 @@ export function Navbar(props: Props) {
           </div>
           <h1 className="font-bold">grobot</h1>
         </div>
-        <div className="w-36 flex flex-0 justify-end">
+        <div className="w-36 flex flex-0 gap-3 justify-end">
+          {/* <Link href="/me" passHref>
+            <a>
+              <Button
+                size="sm"
+                variant="neutral"
+                mode="default"
+                iconLeft={faUser}
+              >
+                Profile
+              </Button>
+            </a>
+          </Link> */}
           <Link
             href="https://landbot.pro/v3/H-1344766-1F4J8SWG83O073XV/index.html"
             target="_blank"
             passHref
           >
             <a>
-              <Button size="sm" variant="action" mode="outlined">
+              <Button
+                size="sm"
+                variant="action"
+                mode="outlined"
+                iconLeft={faComment}
+              >
                 Feedback
               </Button>
             </a>

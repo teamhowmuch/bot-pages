@@ -8,6 +8,7 @@ import { CompanyRating } from "./CompanyRating";
 import { NothingToSeeHere } from "./NothingToSeeHere";
 import { Title } from "./Title";
 import YesGif from "../../public/gifs/yes.gif";
+import classNames from "classnames";
 
 type Props = {
   userCompanies: UserCompanies;
@@ -95,23 +96,46 @@ export function Comparison({
         </thead>
         <tbody>
           <tr>
-            <td>
-              <span className="font-bold">Base pricing</span>
+            <td className="p-2 text-right">
+              <span className="font-bold">Match</span>
             </td>
-            {current.map((c) => (
-              <td scope="col" key={c.id} className="text-center font-bold">
-                €{c.costTravelInsurance}
-              </td>
-            ))}
-            {alternatives.map((a) => (
-              <td scope="col" key={`td-${a.id}`} className="text-center">
-                €{a.costTravelInsurance}
+            {[...current, ...alternatives].map((c) => (
+              <td key={c.id} className={classNames("text-center")}>
+                <span
+                  className={classNames("p-1 rounded text-white", {
+                    "bg-red-400": c.scoreOutOfFive === 1,
+                    "bg-orange-400": c.scoreOutOfFive === 2,
+                    "bg-yellow-400": c.scoreOutOfFive === 3,
+                    "bg-green-400": c.scoreOutOfFive === 4,
+                    "bg-green-600": c.scoreOutOfFive === 5,
+                  })}
+                >
+                  {c.relativeScore}%
+                </span>
               </td>
             ))}
           </tr>
 
           <tr>
-            <td></td>
+            <td className="p-2 text-right">
+              <span className="font-bold">Base pricing</span>
+            </td>
+            {current.map((c) => (
+              <td scope="col" key={c.id} className="text-center font-bold">
+                €{c.costTravelInsurance}/month
+              </td>
+            ))}
+            {alternatives.map((a) => (
+              <td scope="col" key={`td-${a.id}`} className="text-center">
+                €{a.costTravelInsurance}/month
+              </td>
+            ))}
+          </tr>
+
+          <tr>
+            <td className="p-2 text-right">
+              <span className="font-bold">Website</span>
+            </td>
             {current.map((c) => (
               <td key={c.id} />
             ))}
@@ -134,17 +158,20 @@ export function Comparison({
                   >
                     <Button>Go to {a.displayNameCompany}</Button>
                   </a>
+                  {a.travelURL.includes("awin") && (
+                    <span className="text-xs">👆 Affiliate</span>
+                  )}
                 </div>
               </td>
             ))}
           </tr>
 
           <tr>
-            <td>
+            <td className="text-right p-2">
               <span className="font-bold">Compare</span>
             </td>
             <td colSpan={alternatives.length + current.length}>
-              <div className="flex gap-1 py-3">
+              <div className="flex gap-1 py-3 justify-center">
                 <a
                   href="https://www.independer.nl/reisverzekering/intro.aspx"
                   onClick={() =>
@@ -181,7 +208,19 @@ export function Comparison({
           <tr>
             <td></td>
             <td colSpan={100}>
-              I don&apos;t receive a commission on any of these links.
+              <Card variant="gray" className="max-w-lg">
+                <h6 className="font-bold">Affiliate links</h6>
+                <p className="text-sm mb-2">
+                  As you know, I&apos;m all about transparency, also when it
+                  comes to my own actions.
+                </p>
+                <p className="text-sm ">
+                  To keep my servers running and my makers fed I&apos;m
+                  currently experimenting with affiliate links. I promise to
+                  never promote or boost results for companies I receive an
+                  affiliate commission on. I will mark all affiliate links❗️
+                </p>
+              </Card>
             </td>
           </tr>
         </tbody>
@@ -237,6 +276,27 @@ export function Comparison({
               </tr>
             </thead>
             <tbody>
+              <tr>
+                <td className="p-2 text-right">
+                  <span className="font-bold">Match</span>
+                </td>
+                {[...current, ...alternatives].map((c) => (
+                  <td key={c.id} className={classNames("text-center")}>
+                    <span
+                      className={classNames("p-1 rounded text-white", {
+                        "bg-red-400": c.scoreOutOfFive === 1,
+                        "bg-orange-400": c.scoreOutOfFive === 2,
+                        "bg-yellow-400": c.scoreOutOfFive === 3,
+                        "bg-green-400": c.scoreOutOfFive === 4,
+                        "bg-green-600": c.scoreOutOfFive === 5,
+                      })}
+                    >
+                      {c.relativeScore}%
+                    </span>
+                  </td>
+                ))}
+              </tr>
+
               <tr>
                 <td className="p-2 text-right">
                   <span className="font-bold">Base pricing</span>
@@ -364,9 +424,16 @@ export function Comparison({
               <tr>
                 <td></td>
                 <td colSpan={100}>
-                  <span className="text-gray-400">
-                    I don&apos;t receive a commission on any of these links.
-                  </span>
+                  <Card variant="gray" className="max-w-lg">
+                    <h6 className="font-bold">Affiliate links</h6>
+                    <p className="text-sm ">
+                      I ❤️ transparency. To keep my servers running and my
+                      makers fed I&apos;m currently experimenting with affiliate
+                      links. I promise to never promote or boost results for
+                      companies I receive an affiliate commission on. I will
+                      mark all affiliate links❗️
+                    </p>
+                  </Card>
                 </td>
               </tr>
             </tbody>
@@ -436,6 +503,27 @@ export function Comparison({
         <tbody>
           <tr>
             <td className="p-2 text-right">
+              <span className="font-bold">Match</span>
+            </td>
+            {[...current, ...alternatives].map((c) => (
+              <td key={c.id} className={classNames("text-center")}>
+                <span
+                  className={classNames("p-1 rounded text-white", {
+                    "bg-red-400": c.scoreOutOfFive === 1,
+                    "bg-orange-400": c.scoreOutOfFive === 2,
+                    "bg-yellow-400": c.scoreOutOfFive === 3,
+                    "bg-green-400": c.scoreOutOfFive === 4,
+                    "bg-green-600": c.scoreOutOfFive === 5,
+                  })}
+                >
+                  {c.relativeScore}%
+                </span>
+              </td>
+            ))}
+          </tr>
+
+          <tr>
+            <td className="p-2 text-right">
               <span className="font-bold">Base pricing</span>
             </td>
             {current.map((c) => (
@@ -461,7 +549,7 @@ export function Comparison({
               <td scope="col" key={`td-${a.id}`} className="text-center">
                 <div className="inline-block py-3">
                   <a
-                    href={a.travelURL}
+                    href={a.healthURL}
                     onClick={() =>
                       push([
                         "trackEvent",
@@ -475,6 +563,9 @@ export function Comparison({
                   >
                     <Button>Go to {a.displayNameCompany}</Button>
                   </a>
+                  {a.healthURL.includes("awin") && (
+                    <span className="text-xs">❗️ Affiliate (read more below)</span>
+                  )}
                 </div>
               </td>
             ))}
@@ -523,7 +614,16 @@ export function Comparison({
           <tr>
             <td></td>
             <td colSpan={100}>
-              I don&apos;t receive a commission on any of these links.
+              <Card variant="gray" className="max-w-lg">
+                <h6 className="font-bold">Affiliate links</h6>
+                <p className="text-sm ">
+                  I ❤️ transparency. To keep my servers running and my makers
+                  fed I&apos;m currently experimenting with affiliate links. I
+                  promise to never promote or boost results for companies I
+                  receive an affiliate commission on. I will mark all affiliate
+                  links❗️
+                </p>
+              </Card>
             </td>
           </tr>
         </tbody>
