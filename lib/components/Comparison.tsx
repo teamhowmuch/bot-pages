@@ -158,8 +158,10 @@ export function Comparison({
                   >
                     <Button>Go to {a.displayNameCompany}</Button>
                   </a>
-                  {a.travelURL.includes("awin") && (
+                  {a.travelURL.includes("awin") ? (
                     <span className="text-xs">👆 Affiliate</span>
+                  ) : (
+                    <span className="text-xs">&nbsp;</span>
                   )}
                 </div>
               </td>
@@ -216,9 +218,7 @@ export function Comparison({
                 </p>
                 <p className="text-sm ">
                   To keep my servers running and my makers fed I&apos;m
-                  currently experimenting with affiliate links. I promise to
-                  never promote or boost results for companies I receive an
-                  affiliate commission on. I will mark all affiliate links❗️
+                  currently experimenting with affiliate links.
                 </p>
               </Card>
             </td>
@@ -563,8 +563,10 @@ export function Comparison({
                   >
                     <Button>Go to {a.displayNameCompany}</Button>
                   </a>
-                  {a.healthURL.includes("awin") && (
-                    <span className="text-xs">❗️ Affiliate (read more below)</span>
+                  {a.healthURL.includes("awin") ? (
+                    <span className="text-xs">❗️ Affiliate</span>
+                  ) : (
+                    <span className="text-xs"> &nbsp;</span>
                   )}
                 </div>
               </td>
