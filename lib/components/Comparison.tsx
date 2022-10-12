@@ -9,6 +9,7 @@ import { NothingToSeeHere } from "./NothingToSeeHere";
 import { Title } from "./Title";
 import YesGif from "../../public/gifs/yes.gif";
 import classNames from "classnames";
+import Script from "next/script";
 
 type Props = {
   userCompanies: UserCompanies;
