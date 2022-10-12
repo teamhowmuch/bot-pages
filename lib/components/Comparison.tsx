@@ -10,6 +10,8 @@ import { Title } from "./Title";
 import YesGif from "../../public/gifs/yes.gif";
 import classNames from "classnames";
 import Script from "next/script";
+import { TextInput } from "./TextInput";
+import { SendEmail } from "./SendEmail";
 
 type Props = {
   userCompanies: UserCompanies;
@@ -485,158 +487,176 @@ export function Comparison({
 
   function renderHealthSwitch() {
     return (
-      <table className="min-w-full my-3 ">
-        <thead className="border-b">
-          <tr>
-            <th scope="col" className="text-left"></th>
-            {current.map((c) => (
-              <th scope="col" key={c.id}>
-                {c.displayNameCompany}
-              </th>
-            ))}
-            {alternatives.map((a) => (
-              <th scope="col" key={`th-${a.id}`}>
-                {a.displayNameCompany}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td className="p-2 text-right">
-              <span className="font-bold">Match</span>
-            </td>
-            {[...current, ...alternatives].map((c) => (
-              <td key={c.id} className={classNames("text-center")}>
-                <span
-                  className={classNames("p-1 rounded text-white", {
-                    "bg-red-400": c.scoreOutOfFive === 1,
-                    "bg-orange-400": c.scoreOutOfFive === 2,
-                    "bg-yellow-400": c.scoreOutOfFive === 3,
-                    "bg-green-400": c.scoreOutOfFive === 4,
-                    "bg-green-600": c.scoreOutOfFive === 5,
-                  })}
+      <div>
+        <div className=" py-12">
+          <h1 className="text-2xl">1️⃣ Know when to switch</h1>
+          <p>
+            Dutchies can switch health insurance in{" "}
+            <span className="underline">November and December 🗓.</span>
+          </p>
+          <p className="pt-5">
+            Since humans are so easily distracted, would you like me to send you
+            a reminder come November 1st?
+          </p>
+
+          <div className="rounded bg-blue-100 inline-block p-3 mt-3">
+            <h2 className="text-xl pt-3">Reminder to switch in November?</h2>
+            <div className="py-2 flex gap-1">
+              <SendEmail
+                emailTemplate="healthInsuranceReminder"
+                prefill={chatData.email}
+                buttonLabel="Remind me"
+              />
+            </div>
+            <p className="text-sm">
+              I will include all my latest findings and 2023 prices in the
+              email.
+            </p>
+          </div>
+
+          <h1 className="text-2xl pt-3">2️⃣ Choose an option that fits you</h1>
+        </div>
+        <table className="min-w-full my-3 ">
+          <thead className="border-b">
+            <tr>
+              <th scope="col" className="text-left"></th>
+              {current.map((c) => (
+                <th scope="col" key={c.id}>
+                  {c.displayNameCompany}
+                </th>
+              ))}
+              {alternatives.map((a) => (
+                <th scope="col" key={`th-${a.id}`}>
+                  {a.displayNameCompany}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td className="p-2 text-right">
+                <span className="font-bold">Match</span>
+              </td>
+              {[...current, ...alternatives].map((c) => (
+                <td key={c.id} className={classNames("text-center")}>
+                  <span
+                    className={classNames("p-1 rounded text-white", {
+                      "bg-red-400": c.scoreOutOfFive === 1,
+                      "bg-orange-400": c.scoreOutOfFive === 2,
+                      "bg-yellow-400": c.scoreOutOfFive === 3,
+                      "bg-green-400": c.scoreOutOfFive === 4,
+                      "bg-green-600": c.scoreOutOfFive === 5,
+                    })}
+                  >
+                    {c.relativeScore}%
+                  </span>
+                </td>
+              ))}
+            </tr>
+
+            <tr>
+              <td className="p-2 text-right">
+                <span className="font-bold">Base pricing</span>
+              </td>
+              {current.map((c) => (
+                <td scope="col" key={c.id} className="text-center">
+                  €{c.costHealthInsurance}
+                </td>
+              ))}
+              {alternatives.map((a) => (
+                <td
+                  scope="col"
+                  key={`td-${a.id}`}
+                  className="text-center bg-gray-100"
                 >
-                  {c.relativeScore}%
-                </span>
-              </td>
-            ))}
-          </tr>
+                  €{a.costHealthInsurance}
+                </td>
+              ))}
+            </tr>
 
-          <tr>
-            <td className="p-2 text-right">
-              <span className="font-bold">Base pricing</span>
-            </td>
-            {current.map((c) => (
-              <td scope="col" key={c.id} className="text-center">
-                €{c.costHealthInsurance}
-              </td>
-            ))}
-            {alternatives.map((a) => (
-              <td
-                scope="col"
-                key={`td-${a.id}`}
-                className="text-center bg-gray-100"
-              >
-                €{a.costHealthInsurance}
-              </td>
-            ))}
-          </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              {alternatives.map((a) => (
+                <td scope="col" key={`td-${a.id}`} className="text-center">
+                  <div className="inline-block py-3">
+                    <a
+                      href={a.healthURL}
+                      onClick={() =>
+                        push([
+                          "trackEvent",
+                          "Results",
+                          "Click Alternative",
+                          "health insurance",
+                          `${a.displayNameCompany} DIRECT`,
+                        ])
+                      }
+                      target="blank"
+                    >
+                      <Button>Go to {a.displayNameCompany}</Button>
+                    </a>
+                    {a.healthURL.includes("awin") ? (
+                      <p className="text-xs  max-w-xs">
+                        💡 if you switch health insurance via this link, I will
+                        receive a small commission which I will use to research
+                        more companies
+                      </p>
+                    ) : (
+                      <span className="text-xs"> &nbsp;</span>
+                    )}
+                  </div>
+                </td>
+              ))}
+            </tr>
 
-          <tr>
-            <td></td>
-            <td></td>
-            {alternatives.map((a) => (
-              <td scope="col" key={`td-${a.id}`} className="text-center">
-                <div className="inline-block py-3">
+            <tr>
+              <td className="p-2">
+                <h6 className="font-bold text-right">Compare</h6>
+              </td>
+              <td colSpan={alternatives.length + current.length}>
+                <div className="flex gap-1 py-3">
                   <a
-                    href={a.healthURL}
+                    href="https://www.independer.nl/zorgverzekering/intro.aspx"
                     onClick={() =>
                       push([
                         "trackEvent",
                         "Results",
                         "Click Alternative",
                         "health insurance",
-                        `${a.displayNameCompany} DIRECT`,
+                        `INDEPENDER`,
                       ])
                     }
                     target="blank"
                   >
-                    <Button>Go to {a.displayNameCompany}</Button>
+                    <Button>Compare on Independer</Button>
                   </a>
-                  {a.healthURL.includes("awin") ? (
-                    <span className="text-xs">❗️ Affiliate</span>
-                  ) : (
-                    <span className="text-xs"> &nbsp;</span>
-                  )}
+                  <a
+                    href="https://www.poliswijzer.nl/zorgverzekering"
+                    onClick={() =>
+                      push([
+                        "trackEvent",
+                        "Results",
+                        "Click Alternative",
+                        "health insurance",
+                        `POLISWIJZER`,
+                      ])
+                    }
+                    target="blank"
+                  >
+                    <Button>Compare on PolisWijzer</Button>
+                  </a>
                 </div>
               </td>
-            ))}
-          </tr>
-
-          <tr>
-            <td>
-              <span className="font-bold">Compare</span>
-            </td>
-            <td colSpan={alternatives.length + current.length}>
-              <div className="flex gap-1 py-3">
-                <a
-                  href="https://www.independer.nl/zorgverzekering/intro.aspx"
-                  onClick={() =>
-                    push([
-                      "trackEvent",
-                      "Results",
-                      "Click Alternative",
-                      "health insurance",
-                      `INDEPENDER`,
-                    ])
-                  }
-                  target="blank"
-                >
-                  <Button>Compare on Independer</Button>
-                </a>
-                <a
-                  href="https://www.poliswijzer.nl/zorgverzekering"
-                  onClick={() =>
-                    push([
-                      "trackEvent",
-                      "Results",
-                      "Click Alternative",
-                      "health insurance",
-                      `POLISWIJZER`,
-                    ])
-                  }
-                  target="blank"
-                >
-                  <Button>Compare on PolisWijzer</Button>
-                </a>
-              </div>
-            </td>
-          </tr>
-
-          <tr>
-            <td></td>
-            <td colSpan={100}>
-              <Card variant="gray" className="max-w-lg">
-                <h6 className="font-bold">Affiliate links</h6>
-                <p className="text-sm ">
-                  I ❤️ transparency. To keep my servers running and my makers
-                  fed I&apos;m currently experimenting with affiliate links. I
-                  promise to never promote or boost results for companies I
-                  receive an affiliate commission on. I will mark all affiliate
-                  links❗️
-                </p>
-              </Card>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     );
   }
 
   function renderMain() {
     return (
-      <div>
+      <div className="pb-24">
         <div className="grid grid-cols-1 gap-6">
           <Card>
             <h3 className="uppercase text-center mb-3 text-gray-400">

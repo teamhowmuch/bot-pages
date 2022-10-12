@@ -1,7 +1,11 @@
-import { HTMLInputTypeAttribute, InputHTMLAttributes } from "react";
+import { forwardRef, InputHTMLAttributes } from "react";
 
 type Props = InputHTMLAttributes<HTMLInputElement> & {};
 
-export function TextInput(props: Props) {
-  return <input {...props} />;
-}
+export const TextInput = forwardRef<HTMLInputElement, Props>(
+  (props: Props, ref) => {
+    return <input {...props} ref={ref} className="p-2 bg-gray-100 rounded" />;
+  }
+);
+
+TextInput.displayName = "TextInput";

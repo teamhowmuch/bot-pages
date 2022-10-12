@@ -8,7 +8,7 @@ import {
 import classnames from "classnames";
 import { Icon } from "./Icon";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faRefresh, faTimes } from "@fortawesome/free-solid-svg-icons";
 
 type Props = DetailedHTMLProps<
   ButtonHTMLAttributes<HTMLButtonElement>,
@@ -19,6 +19,7 @@ type Props = DetailedHTMLProps<
   iconLeft?: IconDefinition;
   size?: "sm" | "md" | "lg";
   children?: ReactNode;
+  working?: boolean;
 };
 
 export function Button({
@@ -28,6 +29,7 @@ export function Button({
   iconLeft,
   children,
   type = "button",
+  working = false,
   ...rest
 }: Props) {
   const className = classnames(
@@ -57,7 +59,8 @@ export function Button({
 
   return (
     <button className={className} {...rest}>
-      {iconLeft && <Icon icon={iconLeft} />}
+      {working && <Icon icon={faRefresh} spin />}
+      {iconLeft && !working && <Icon icon={iconLeft} />}
       {children}
     </button>
   );

@@ -31,11 +31,6 @@ function MyApp({ Component, pageProps }: AppProps) {
         `}
       </Script>
 
-      <Script
-        id="landbot1"
-        src="https://cdn.landbot.io/landbot-3/landbot-3.0.0.js"
-      />
-
       <Script id="landbot2" strategy="lazyOnload">
         {`
 
