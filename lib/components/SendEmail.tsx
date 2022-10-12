@@ -1,3 +1,4 @@
+import { push } from "@socialgouv/matomo-next";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { signupNovemberReminder } from "../api/sendEmail";
@@ -35,6 +36,13 @@ export function SendEmail({
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     try {
+
+      push([
+        "trackEvent",
+        "Results",
+        "Signup health insurance november"
+      ])
+
       setSignupLoading(true);
       await signupNovemberReminder(data.email);
       setSignupLoading(false);
@@ -88,9 +96,7 @@ export function SendEmail({
   if (signupError) {
     return renderSignupError();
   } else if (signupComplete) {
-    return renderSignup();
-
-    // return renderSignupComplete();
+    return renderSignupComplete();
   } else {
     return renderSignup();
   }
