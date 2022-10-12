@@ -509,8 +509,7 @@ export function Comparison({
               />
             </div>
             <p className="text-sm">
-              I will include all my latest findings and 2023 prices in the
-              email.
+              Mail will include new prices and latest updates. 
             </p>
           </div>
 
