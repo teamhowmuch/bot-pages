@@ -6,6 +6,7 @@ import { useEffect } from "react";
 
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
+import { AuthProvider } from "../lib/providers/AuthProvider";
 config.autoAddCss = false;
 
 const MATOMO_URL = process.env.NEXT_PUBLIC_MATOMO_URL as string;
@@ -17,9 +18,10 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, []);
 
   return (
-    <>
-      <Script id="hotjar" strategy="afterInteractive">
-        {`
+    <AuthProvider>
+      <>
+        <Script id="hotjar" strategy="afterInteractive">
+          {`
           (function(h,o,t,j,a,r){
             h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
             h._hjSettings={hjid:3110094,hjsv:6};
@@ -29,10 +31,10 @@ function MyApp({ Component, pageProps }: AppProps) {
             a.appendChild(r);
         })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
         `}
-      </Script>
+        </Script>
 
-      <Script id="landbot2" strategy="lazyOnload">
-        {`
+        <Script id="landbot2" strategy="lazyOnload">
+          {`
 
           window.addEventListener('mouseover', initLandbot, { once: true });
           window.addEventListener('touchstart', initLandbot, { once: true });
@@ -52,10 +54,11 @@ function MyApp({ Component, pageProps }: AppProps) {
           }
 
         `}
-      </Script>
+        </Script>
 
-      <Component {...pageProps} />
-    </>
+        <Component {...pageProps} />
+      </>
+    </AuthProvider>
   );
 }
 

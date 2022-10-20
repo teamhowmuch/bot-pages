@@ -1,16 +1,25 @@
+import { User } from "../models";
+import { api } from "./api";
+
+type LoginDto = {
+  access_token: string;
+  user: User;
+};
+
 export async function login(email: string, password: string) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/auth/login`, {
+  return api<LoginDto>(`/auth/login`, {
     method: "POST",
     body: JSON.stringify({ email, password }),
-    headers: {
-      "Content-Type": "application/json",
-    },
   });
+}
 
-  const json = await res.json();
+export async function requestOtp(email: string) {
+  return api<void>(`/auth/request-otp`, {
+    method: "POST",
+    body: JSON.stringify({ email }),
+  });
+}
 
-  if (json.access_token) {
-    localStorage.setItem("jwt", json.access_token);
-  }
-  return json;
+export async function getProfile() {
+  return await api<User>(`/profile`);
 }

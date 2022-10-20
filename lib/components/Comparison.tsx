@@ -509,7 +509,7 @@ export function Comparison({
               />
             </div>
             <p className="text-sm">
-              Mail will include new prices and latest updates. 
+              Mail will include new prices and latest updates.
             </p>
           </div>
 

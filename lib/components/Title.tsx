@@ -1,22 +1,37 @@
 import classNames from "classnames";
-import { ReactNode } from "react";
+import { HTMLAttributes, ReactNode } from "react";
 
-type Props = {
-  variant?: "h1" | "h2" | "h3";
+type Props = HTMLAttributes<HTMLHeadingElement> & {
+  variant?: "h1" | "h2" | "h3" | "h6";
   children: ReactNode;
   align?: "center" | "left" | "right";
+  color?: "default" | "inverse" | "gray";
+  uppercase?: boolean;
 };
 
-export function Title({ variant = "h1", children, align }: Props) {
+export function Title({
+  variant = "h1",
+  color = "default",
+  children,
+  uppercase,
+  align,
+  className,
+}: Props) {
   const Component = variant;
 
   return (
     <Component
-      className={classNames([`text-${align}`], {
-        "text-3xl": variant === "h1",
-        "text-2xl": variant === "h2",
-        "text-l": variant === "h3",
-      })}
+      className={classNames(
+        [`text-${align}`],
+        variant === "h1" && "text-3xl font-bold",
+        variant === "h2" && "text-2xl font-bold",
+        variant === "h3" && "text-lg font-bold",
+        {
+          "text-gray-400": color === "gray",
+          uppercase: uppercase,
+        },
+        className
+      )}
     >
       {children}
     </Component>

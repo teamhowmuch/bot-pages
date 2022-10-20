@@ -35,7 +35,7 @@ export function Button({
   const className = classnames(
     "rounded hover:opacity-90 flex gap-1 items-center",
     mode === "solid" && variant === "action" ? "bg-blue-500 text-white" : null,
-    mode === "solid" && variant === "neutral" ? "bg-blue-500 text-white" : null,
+    mode === "solid" && variant === "neutral" ? "bg-gray-200 text-black" : null,
 
     mode === "outlined" && variant === "action"
       ? "bg-transparent border-2 border-blue-500 text-blue-500"

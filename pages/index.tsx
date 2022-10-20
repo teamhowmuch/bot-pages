@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import { Container, Navbar } from "../lib/components";
 
 const Home: NextPage = () => {
   return (
@@ -11,8 +12,12 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <Navbar />
+
       <main>
-        <h1>ello</h1>
+        <Container>
+          <h1>ello</h1>
+        </Container>
       </main>
     </div>
   );
