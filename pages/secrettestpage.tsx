@@ -52,9 +52,10 @@ const SecretTestPage: NextPage = () => {
   } = useForm<AuthInputs>();
 
   const onSubmitLogin: SubmitHandler<AuthInputs> = async (data) => {
-    const res = await login(data.email, data.password);
-    if (res.status === 404) {
-      alert(`error loggin in ${JSON.stringify(res)}`);
+    try {
+      const res = await login(data.email, data.password);
+    } catch (error) {
+      alert(`error loggin in ${JSON.stringify(error)}`);
     }
   };
 

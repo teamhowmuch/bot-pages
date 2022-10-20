@@ -103,7 +103,7 @@ const Profile: NextPage<Props> = () => {
       setSaveOtpLoading(true);
       await verifyChangeEmail(data);
       await reloadProfile();
-      setValueOtp("");
+      setValueOtp("otp", "");
       setSaveOtpError(null);
       setChangeEmailRequest(null);
     } catch (error) {
