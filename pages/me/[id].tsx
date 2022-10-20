@@ -51,10 +51,7 @@ const Me: NextPage = () => {
       } else {
         console.log("not logged in, no email otp, redir to", "/auth/login");
         router.replace({
-          pathname: "/auth/login",
-          query: {
-            redirect: encodeURIComponent(`/chats/${router.query.id}`),
-          },
+          pathname: `/chats/${router.query.id}`,
         });
       }
     }
