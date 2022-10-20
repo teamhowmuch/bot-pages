@@ -56,7 +56,7 @@ export function Navbar(props: Props) {
             </div>
             <h1 className="font-bold">grobot</h1>
           </div>
-          <div className="w-36 flex flex-0 gap-3 justify-end">
+          {/* <div className="w-36 flex flex-0 gap-3 justify-end">
             {loadingInitial ? null : user ? (
               <Link href="/profile" passHref>
                 <a>
@@ -72,7 +72,7 @@ export function Navbar(props: Props) {
                 </a>
               </Link>
             )}
-          </div>
+          </div> */}
         </div>
       </Container>
     </div>
