@@ -1,27 +1,36 @@
-import { UserValue } from "./ChatData";
 import { CompanyClaim, CompanyScore } from "./Company";
+import { User } from "./User";
 
-export type ValueMap = Record<UserValue, CompanyScore>;
+export type UserValueScores = Pick<
+  User,
+  | "anti_tax_avoidance_score"
+  | "animal_score"
+  | "anti_weapons_score"
+  | "climate_score"
+  | "equality_score"
+  | "fair_pay_score"
+  | "nature_score"
+>;
+export type UserValueScore = keyof UserValueScores;
 
+export type ValueMap = Record<UserValueScore, CompanyScore>;
 export const valueMap: ValueMap = {
-  ceo_pay: "fairPayScore",
-  biodiversity: "natureScore",
-  climate: "climateScore",
-  fair_pay: "fairPayScore",
-  animal_welfare: "animalScore",
-  tax_evasion_sucks: "antiTaxAvoidanceScore",
-  weapons_are_ok: "antiWeaponsScore",
-  gender_equality: "equalityScore",
+  fair_pay_score: "fairPayScore",
+  nature_score: "natureScore",
+  climate_score: "climateScore",
+  animal_score: "animalScore",
+  anti_tax_avoidance_score: "antiTaxAvoidanceScore",
+  anti_weapons_score: "antiWeaponsScore",
+  equality_score: "equalityScore",
 };
 
-export type ClaimMap = Record<UserValue, CompanyClaim>;
+export type ClaimMap = Record<UserValueScore, CompanyClaim>;
 export const claimsMap: ClaimMap = {
-  ceo_pay: "fairPayClaims",
-  biodiversity: "natureClaims",
-  climate: "climateClaims",
-  fair_pay: "fairPayClaims",
-  animal_welfare: "animalClaims",
-  tax_evasion_sucks: "antiTaxAvoidanceClaims",
-  weapons_are_ok: "antiWeaponsClaims",
-  gender_equality: "equalityClaims",
+  fair_pay_score: "fairPayClaims",
+  nature_score: "natureClaims",
+  climate_score: "climateClaims",
+  animal_score: "animalClaims",
+  anti_tax_avoidance_score: "antiTaxAvoidanceClaims",
+  anti_weapons_score: "antiWeaponsClaims",
+  equality_score: "equalityClaims",
 };

@@ -1,27 +1,32 @@
-import type { NextPage } from "next";
+import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { Container, Navbar } from "../../lib/components";
-import { listCompanies } from "../../lib/graphql";
-import { Company } from "../../lib/models";
+import {
+  Card,
+  Company,
+  CompanyList,
+  Container,
+  Navbar,
+  Title,
+} from "../../lib/components";
+import {
+  listBanks,
+  listCategories,
+  listCompanies,
+  listFeaturedCategories,
+  listInsurance,
+} from "../../lib/graphql";
+import {
+  Company as CompanyModel,
+  CompanyCategory,
+  CompanyCategoryWithCompanies,
+} from "../../lib/models";
 
 type Props = {
-  companies: Company[];
+  companyCategories: CompanyCategoryWithCompanies[];
 };
 
-function renderCompany(company: Company) {
-  return (
-    <div key={company.id}>
-      <Link href={`/companies/${company.id}`}>
-        <a>
-          <h6>{company.displayNameCompany}</h6>
-        </a>
-      </Link>
-    </div>
-  );
-}
-
-const Me: NextPage<Props> = ({ companies }) => {
+const ExplorePage: NextPage<Props> = ({ companyCategories }) => {
   return (
     <div>
       <Head>
@@ -33,20 +38,36 @@ const Me: NextPage<Props> = ({ companies }) => {
 
       <main>
         <Container>
-          <h3>Companies:</h3>
-          {companies.map((c) => renderCompany(c))}
+          <div>
+            <Title className="text-6xl text-center">
+              Find companies that <strong>do</strong> sustainble.
+            </Title>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            {companyCategories.map((category) => (
+              <Card key={category.id}>
+                <Link href={`/explore/${category.slug}`}>
+                  <a>
+                    <Title>{category.name}</Title>
+                  </a>
+                </Link>
+                <CompanyList companies={category.companies} />
+              </Card>
+            ))}
+          </div>
         </Container>
       </main>
     </div>
   );
 };
 
-export async function getStaticProps() {
-  const companies = await listCompanies();
+export const getStaticProps: GetStaticProps<Props> = async () => {
+  const companyCategories = await listFeaturedCategories();
 
   return {
-    props: { companies },
+    props: { companyCategories },
   };
-}
+};
 
-export default Me;
+export default ExplorePage;

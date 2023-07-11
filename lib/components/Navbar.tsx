@@ -42,7 +42,7 @@ export function Navbar(props: Props) {
         <div className="flex px-3 items-center">
           <div className="w-36 flex-0 flex gap-1">
             {/* <NavBarItem to="/home" label="Home" /> */}
-            {/* <NavBarItem to="/explore" label="Explore" /> */}
+            <NavBarItem to="/explore" label="Explore" />
           </div>
 
           <div className="flex flex-1 items-center justify-center gap-2">
@@ -56,7 +56,7 @@ export function Navbar(props: Props) {
             </div>
             <h1 className="font-bold">grobot</h1>
           </div>
-          {/* <div className="w-36 flex flex-0 gap-3 justify-end">
+          <div className="w-36 flex flex-0 gap-3 justify-end">
             {loadingInitial ? null : user ? (
               <Link href="/profile" passHref>
                 <a>
@@ -72,7 +72,7 @@ export function Navbar(props: Props) {
                 </a>
               </Link>
             )}
-          </div> */}
+          </div>
         </div>
       </Container>
     </div>

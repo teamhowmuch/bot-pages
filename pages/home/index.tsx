@@ -25,8 +25,6 @@ function CompanyTile({ name, companyType }: CompanyTileProps) {
   return (
     <Card className="text-center" variant="success">
       <div style={{ height: 300, width: 200 }}>
-        {" "}
-        plaatje
         <Title variant="h3">{name}</Title>
         <Title variant="h3">{companyType}</Title>
         <p>Match: 45%</p>

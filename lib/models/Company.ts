@@ -1,4 +1,4 @@
-export type Company = {
+export type CompanyBase = {
   id: string;
   displayNameCompany: string;
   nameCompanyInternal: string;
@@ -9,7 +9,9 @@ export type Company = {
     id: string;
     url: string;
   };
+};
 
+export type Company = CompanyBase & {
   bankURL: string;
   travelURL: string;
   healthURL: string;

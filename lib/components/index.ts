@@ -4,6 +4,8 @@ export * from "./Card";
 export * from "./CardDismissable";
 export * from "./Company";
 export * from "./CompanyButton";
+export * from "./CompanyList";
+export * from "./CompanyListItem";
 export * from "./CompanyRating";
 export * from "./Comparison";
 export * from "./Container";

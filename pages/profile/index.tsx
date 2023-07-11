@@ -18,7 +18,11 @@ import {
   Title,
 } from "../../lib/components";
 import { useAuth } from "../../lib/hooks";
-import { User } from "../../lib/models";
+import { User, UserValue } from "../../lib/models";
+import { Slider } from "primereact/slider";
+import "primereact/resources/themes/lara-light-indigo/theme.css";
+import "primereact/resources/primereact.min.css";
+import "primeicons/primeicons.css";
 
 type Props = {
   user: User;
@@ -31,6 +35,16 @@ type ProfileInput = {
 
 type OtpInput = {
   otp: string;
+};
+
+type UserValueInput = {
+  equality_score: number;
+  fair_pay_score: number;
+  climate_score: number;
+  anti_weapons_score: number;
+  animal_score: number;
+  nature_score: number;
+  anti_tax_avoidance_score: number;
 };
 
 const Profile: NextPage<Props> = () => {
@@ -47,6 +61,16 @@ const Profile: NextPage<Props> = () => {
   const [saveProfileError, setSaveProfileError] = useState<null | any>(null);
   const [saveOtpLoading, setSaveOtpLoading] = useState(false);
   const [saveOtpError, setSaveOtpError] = useState<null | any>(null);
+
+  const [userValues, setUserValues] = useState<UserValueInput>({
+    equality_score: 0,
+    fair_pay_score: 0,
+    climate_score: 0,
+    anti_weapons_score: 0,
+    animal_score: 0,
+    nature_score: 0,
+    anti_tax_avoidance_score: 0,
+  });
 
   const {
     register,
@@ -74,6 +98,20 @@ const Profile: NextPage<Props> = () => {
   }, [user, setValue]);
 
   useEffect(() => {
+    if (user) {
+      setUserValues({
+        equality_score: user.equality_score,
+        fair_pay_score: user.fair_pay_score,
+        climate_score: user.climate_score,
+        anti_weapons_score: user.anti_weapons_score,
+        animal_score: user.animal_score,
+        nature_score: user.nature_score,
+        anti_tax_avoidance_score: user.anti_tax_avoidance_score,
+      });
+    }
+  }, [user, setUserValues]);
+
+  useEffect(() => {
     if (saveProfileSuccess) {
       setTimeout(() => {
         setSaveProfileSuccess(false);
@@ -83,6 +121,18 @@ const Profile: NextPage<Props> = () => {
 
   // ------
   // event handles
+  const onChangeUserValue = async (
+    valueLabel: keyof UserValueInput,
+    value: number | number[]
+  ) => {
+    if (Array.isArray(value)) {
+      return;
+    }
+
+    setUserValues({ ...userValues, [valueLabel]: value });
+    await updateProfile(userValues);
+  };
+
   const onSubmitProfile: SubmitHandler<ProfileInput> = async (data) => {
     try {
       setSaveProfileLoading(true);
@@ -189,12 +239,59 @@ const Profile: NextPage<Props> = () => {
         <div className="col-span-12 md:col-span-3">
           <Card
             variant="action"
-            className="h-full flex justify-center items-center w-full"
+            className="flex justify-center items-center max-h-60 aspect-square"
           >
             <h1 className="uppercase text-9xl">{user?.email.slice(0, 1)}</h1>
           </Card>
         </div>
         <div className="col-span-12 md:col-span-9">
+          <Card className="mb-3">
+            <Title variant="h3" className="pb-6">
+              Your values
+            </Title>
+            <div className="mb-3  max-w-xs">
+              <Title variant="h2" className="mb-2">
+                Climate
+              </Title>
+              <Slider
+                step={1}
+                min={1}
+                max={5}
+                value={userValues.climate_score}
+                onChange={(e) => {
+                  onChangeUserValue("climate_score", e.value);
+                }}
+              />
+            </div>
+            <div className="mb-3 max-w-xs">
+              <Title variant="h2" className="mb-2">
+                Biodiversity
+              </Title>
+              <Slider
+                step={1}
+                min={1}
+                max={5}
+                value={userValues.nature_score}
+                onChange={(e) => {
+                  onChangeUserValue("nature_score", e.value);
+                }}
+              />
+            </div>
+            <div className="mb-3  max-w-xs">
+              <Title variant="h2" className="mb-2">
+                Animal pay
+              </Title>
+              <Slider
+                step={1}
+                min={1}
+                max={5}
+                value={userValues.animal_score}
+                onChange={(e) => {
+                  onChangeUserValue("animal_score", e.value);
+                }}
+              />
+            </div>
+          </Card>
           <Card>
             <Title variant="h3" className="pb-6">
               Settings

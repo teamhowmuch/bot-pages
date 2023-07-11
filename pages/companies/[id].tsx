@@ -3,6 +3,7 @@ import Head from "next/head";
 import { ParsedUrlQuery } from "querystring";
 import { getCompanyById, listCompanies } from "../../lib/graphql";
 import { Company } from "../../lib/models";
+import { promiseTimeout } from "../../lib/util";
 
 type Props = {
   company: Company;
@@ -34,6 +35,10 @@ interface Params extends ParsedUrlQuery {
 export const getStaticProps: GetStaticProps = async (context) => {
   const { id } = context.params as Params;
   const company = await getCompanyById(id);
+  if (process.env.NODE_ENV === "production") {
+    console.log("wait 1000!");
+    await promiseTimeout(1000);
+  }
 
   return {
     props: { company },
@@ -42,7 +47,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 export async function getStaticPaths() {
   const companies = await listCompanies();
-
   const paths = companies.map((c) => ({ params: { id: c.id } }));
   return { paths, fallback: false };
 }
